@@ -27,7 +27,7 @@ docs/
 ├── overview.md                        — o que é o Lapwing, princípios e visão geral das telas
 ├── privacy.md                         — onde ficam os dados e o que sai do aparelho
 ├── faq.md                             — perguntas frequentes de quem usa
-├── images/                            — capturas de tela usadas no README
+├── images/                            — capturas de tela dos READMEs (pt e en)
 │
 ├── getting-started/                   — para começar
 │   ├── README.md                      — índice do ramo

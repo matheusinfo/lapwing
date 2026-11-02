@@ -1,5 +1,7 @@
 # Lapwing 🐦
 
+**Português** · [English](README.en.md)
+
 **Crie rotas de corrida, entenda seus treinos e acompanhe sua evolução, tudo no seu navegador.**
 
 *Lapwing* é o nome em inglês do **quero-quero**, aquele passarinho que vive correndo pelos gramados. Combina com quem gosta de correr, não é? 😊
