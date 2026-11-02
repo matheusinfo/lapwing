@@ -23,6 +23,7 @@ The documentation is a tree under `docs/` written in Brazilian Portuguese. Every
 ## Development
 
 - [Setup and commands](docs/development/setup.md)
+- [Docker deployment](docs/getting-started/docker.md): `docker compose up -d --build` serves the app on port 8080 (multi-stage `Dockerfile`, Node build → unprivileged nginx, `docker/nginx.conf`; env `LAPWING_PORT`, `LAPWING_BASE_PATH`; build args `BASE_PATH`, `RUN_TESTS`)
 - [Testing](docs/development/testing.md)
 - [Conventions](docs/development/conventions.md)
 - [Adding a screen](docs/development/adding-a-screen.md)

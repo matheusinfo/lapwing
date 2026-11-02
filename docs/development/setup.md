@@ -3,7 +3,7 @@
 
 > **Árvore:** [docs](../README.md) › [development](README.md) › setup
 > **Resumo:** Requisitos, comandos do `package.json`, configuração de TypeScript/Vite e como publicar o `dist/` estático em qualquer host.
-> **Código:** `package.json`, `vite.config.ts`, `tsconfig.json`, `tests/tsconfig.json`, `index.html`
+> **Código:** `package.json`, `vite.config.ts`, `tsconfig.json`, `tests/tsconfig.json`, `index.html`, `Dockerfile`, `compose.yaml`, `docker/nginx.conf`
 
 ## Requisitos
 
@@ -50,6 +50,7 @@ Não há script de lint nem formatter configurado. Lista completa com exemplos e
 | `tests/tsconfig.json` | Estende o raiz; adiciona `node` aos tipos; inclui `../src`, `./` e `../vite.config.ts` |
 | `vite.config.ts` | Apenas `test.include: ['tests/**/*.test.ts']`; sem `base`, plugins ou aliases |
 | `.gitignore` | `node_modules`, `dist` |
+| `.dockerignore` | `node_modules`, `dist`, `.git`, `.github`, `docs`, `deploy`, `*.md` e os próprios arquivos Docker |
 
 Particularidade: o worker do MapLibre é importado como `maplibre-gl/dist/maplibre-gl-worker.mjs?url` e registrado com `setWorkerUrl` em `src/map/base.ts`, porque o MapLibre não acha o worker sozinho depois do bundle.
 
@@ -59,11 +60,11 @@ Particularidade: o worker do MapLibre é importado como `maplibre-gl/dist/maplib
 
 ## Implantação
 
-O app é 100 % estático: qualquer host de arquivos serve (GitHub Pages, Netlify, Cloudflare Pages, S3, nginx…).
+O app é 100 % estático: qualquer host de arquivos serve (GitHub Pages, Netlify, Cloudflare Pages, S3, nginx…). Para servidor próprio há uma imagem Docker pronta (`Dockerfile` multi-stage Node → nginx sem root, `compose.yaml`, `docker/nginx.conf`); ver [Rodar com Docker](../getting-started/docker.md).
 
 | Ponto | Detalhe |
 |---|---|
-| Caminho base | `vite.config.ts` não define `base`, então vale o padrão `/`: os assets são referenciados como `/assets/...`. Para publicar em subcaminho (ex.: `usuario.github.io/lapwing/`), defina `base` no config ou rode `vite build --base=/lapwing/` |
+| Caminho base | `vite.config.ts` não define `base`, então vale o padrão `/`: os assets são referenciados como `/assets/...`. Para publicar em subcaminho (ex.: `usuario.github.io/lapwing/`), defina `base` no config ou rode `npm run build -- --base=/lapwing/` (no Docker: build arg `BASE_PATH`) |
 | Rotas | Roteamento por hash (`#/history`): não precisa de regra de rewrite no servidor |
 | HTTPS | Recomendado; `crypto.randomUUID` e outras APIs exigem contexto seguro (há fallback para `newId`) |
 | Cache | Arquivos em `assets/` têm hash no nome; `index.html` não deve ficar em cache longo |
@@ -83,6 +84,7 @@ IndexedDB e `localStorage` são por origem. Ao mudar o domínio, os usuários co
 ## Veja também
 
 - [Testes](testing.md)
+- [Rodar com Docker](../getting-started/docker.md)
 - [Comandos](../reference/commands.md)
 - [Serviços externos](../architecture/external-services.md)
 - [Primeiros passos](../getting-started/)

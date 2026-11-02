@@ -12,6 +12,8 @@
 
 There is no lint script configured.
 
+- `docker compose up -d --build` builds the Docker image (`Dockerfile`: Node build stage → unprivileged nginx serving `dist/` with `docker/nginx.conf`) and serves the app on port 8080. See `docs/getting-started/docker.md`.
+
 ## Documentation
 
 The full documentation is a tree under `docs/` (Brazilian Portuguese), indexed by `docs/README.md`; `llms.txt` at the repository root is a short entry point. Every page starts with a `<!-- docs-tree: <path> | parent: <index> -->` header. When a change alters behaviour, formats, storage keys or commands, update the matching page (and its folder `README.md` index if you add or remove a page).

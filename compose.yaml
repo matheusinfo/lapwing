@@ -1,0 +1,31 @@
+# Lapwing com Docker Compose.
+#
+#   docker compose up -d --build     # sobe (e recompila) o app
+#   docker compose logs -f           # acompanha os logs
+#   docker compose down              # para e remove o container
+#
+# Abra http://localhost:8080 (ou a porta definida em LAPWING_PORT).
+# Guia completo: docs/getting-started/docker.md
+services:
+  lapwing:
+    build:
+      context: .
+      args:
+        # "/" serve na raiz do domínio; "/lapwing/" serve em uma subpasta.
+        BASE_PATH: ${LAPWING_BASE_PATH:-/}
+    image: lapwing:latest
+    container_name: lapwing
+    restart: unless-stopped
+    ports:
+      # Troque por "127.0.0.1:${LAPWING_PORT:-8080}:8080" se o acesso for só
+      # por um proxy reverso na mesma máquina.
+      - "${LAPWING_PORT:-8080}:8080"
+    # O app é só arquivos estáticos: o container não precisa gravar nada.
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    mem_limit: 64m

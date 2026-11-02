@@ -1,0 +1,11 @@
+# Só o necessário para o build vai para a imagem.
+node_modules
+dist
+.git
+.github
+deploy
+docs
+*.md
+Dockerfile
+compose.yaml
+.dockerignore

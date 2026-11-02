@@ -32,6 +32,7 @@ docs/
 ├── getting-started/                   — para começar
 │   ├── README.md                      — índice do ramo
 │   ├── install-and-run.md             — instalar o Node, rodar, gerar e publicar o app
+│   ├── docker.md                      — subir com Docker/Compose: porta, subpasta, HTTPS e atualização
 │   └── first-steps.md                 — roteiro de 10 minutos pelo app
 │
 ├── features/                          — guia de cada tela (linguagem simples)
@@ -80,6 +81,7 @@ docs/
 |---|---|
 | Entender o que é o app | [overview.md](overview.md) |
 | Rodar no seu computador | [getting-started/install-and-run.md](getting-started/install-and-run.md) |
+| Subir num servidor com Docker | [getting-started/docker.md](getting-started/docker.md) |
 | Aprender a usar | [getting-started/first-steps.md](getting-started/first-steps.md), depois [features/](features/README.md) |
 | Saber onde ficam seus dados | [privacy.md](privacy.md) |
 | Mexer no código | [development/](development/README.md) e [architecture/](architecture/README.md) |

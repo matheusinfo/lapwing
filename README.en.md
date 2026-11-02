@@ -70,6 +70,16 @@ npm run build   # type-checks the code, runs the checks and creates the dist/ fo
 
 See all the details in [Install and run](docs/getting-started/install-and-run.md) (in Portuguese).
 
+### I want to host it on a server with Docker 🐳
+
+No Node.js needed. With [Docker](https://docs.docker.com/get-docker/) installed, inside the project folder:
+
+```bash
+docker compose up -d --build   # builds the image and serves the app at http://localhost:8080
+```
+
+To update later, just `git pull` and run the same command. Set `LAPWING_PORT` to change the port and `LAPWING_BASE_PATH=/lapwing/` to serve it under a subpath. Put a reverse proxy (Caddy, nginx, Traefik…) in front for HTTPS. Full guide in [Run with Docker](docs/getting-started/docker.md) (in Portuguese).
+
 ---
 
 ## Documentation 📚
@@ -80,7 +90,7 @@ The documentation lives in the [`docs/`](docs/README.md) folder, is written in B
 docs/
 ├── README.md          ← start here (full map)
 ├── overview.md        — what Lapwing is and how it thinks
-├── getting-started/   — installing, running and first steps
+├── getting-started/   — installing, running (Docker included) and first steps
 ├── features/          — a plain-language guide to each screen
 ├── architecture/      — how the code works under the hood
 ├── development/       — how to contribute: commands, tests and conventions

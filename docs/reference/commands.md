@@ -3,7 +3,7 @@
 
 > **Árvore:** [docs](../README.md) › [reference](README.md) › commands
 > **Resumo:** Todos os scripts npm do projeto e todos os atalhos de teclado, mouse e toque do editor de rotas.
-> **Código:** `package.json`, `scripts/make-fixtures.mjs`, `src/screens/routes/toolbar.ts`, `src/screens/routes/route/editor.ts`, `src/screens/routes/index.ts`, `src/ui/confirm.ts`
+> **Código:** `package.json`, `compose.yaml`, `Dockerfile`, `scripts/make-fixtures.mjs`, `src/screens/routes/toolbar.ts`, `src/screens/routes/route/editor.ts`, `src/screens/routes/index.ts`, `src/ui/confirm.ts`
 
 ## Scripts npm
 
@@ -26,6 +26,19 @@ npm run fixtures -- 2026-10-31                               # fixtures até ess
 ```
 
 Não há script de lint nem de formatação.
+
+## Docker
+
+| Comando | Uso |
+|---|---|
+| `docker compose up -d --build` | Compila a imagem e sobe o app em http://localhost:8080 |
+| `docker compose ps` / `docker compose logs -f` | Estado (healthcheck) e logs |
+| `docker compose down` | Para e remove o container |
+| `LAPWING_PORT=3000 docker compose up -d` | Outra porta no host |
+| `LAPWING_BASE_PATH=/lapwing/ docker compose up -d --build` | Servir em subpasta |
+| `docker build --build-arg RUN_TESTS=true -t lapwing .` | Build só com `docker`, rodando a suíte de testes antes |
+
+Detalhes em [Rodar com Docker](../getting-started/docker.md).
 
 ## Editor de rotas
 

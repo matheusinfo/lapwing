@@ -70,6 +70,16 @@ npm run build   # confere o código, roda as verificações e gera a pasta dist/
 
 Veja todos os detalhes em [Instalar e rodar](docs/getting-started/install-and-run.md).
 
+### Quero subir num servidor com Docker 🐳
+
+Não precisa instalar o Node. Com o [Docker](https://docs.docker.com/get-docker/) instalado, dentro da pasta do projeto:
+
+```bash
+docker compose up -d --build   # gera a imagem e sobe o app em http://localhost:8080
+```
+
+Para atualizar depois, é só `git pull` e o mesmo comando. Porta, subpasta, HTTPS e dicas estão em [Rodar com Docker](docs/getting-started/docker.md).
+
 ---
 
 ## Documentação 📚
@@ -80,7 +90,7 @@ A documentação fica na pasta [`docs/`](docs/README.md) e é organizada como um
 docs/
 ├── README.md          ← comece por aqui (mapa completo)
 ├── overview.md        — o que é o Lapwing e como ele pensa
-├── getting-started/   — instalar, rodar e dar os primeiros passos
+├── getting-started/   — instalar, rodar (inclusive com Docker) e dar os primeiros passos
 ├── features/          — guia de cada tela, em linguagem simples
 ├── architecture/      — como o código funciona por dentro
 ├── development/       — como contribuir: comandos, testes e convenções

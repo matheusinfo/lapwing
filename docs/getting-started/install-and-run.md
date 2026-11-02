@@ -43,6 +43,8 @@ A pasta **`dist/`** contém o app completo: só arquivos estáticos (HTML, CSS, 
 
 Qualquer hospedagem de site estático serve: GitHub Pages, Netlify, Cloudflare Pages, Vercel ou o servidor web que você já tem. Basta enviar o conteúdo de `dist/`.
 
+Tem um servidor com Docker? Um `docker compose up -d --build` na pasta do projeto já sobe o app pronto, sem instalar o Node. Veja [Rodar com Docker](docker.md).
+
 Bom saber:
 
 - O app usa endereços com `#` (como `#/history`), então **não é preciso** configurar redirecionamentos no servidor.
@@ -70,6 +72,7 @@ Se os dois terminarem sem erros, está tudo funcionando.
 
 ## Veja também
 
+- [Rodar com Docker](docker.md)
 - [Primeiros passos](first-steps.md)
 - [Comandos](../reference/commands.md)
 - [Ambiente de desenvolvimento](../development/setup.md)
