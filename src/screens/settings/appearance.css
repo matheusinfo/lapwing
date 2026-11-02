@@ -1,0 +1,90 @@
+/* Appearance card of the settings screen (prefix ap-). */
+
+.ap-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 420px;
+}
+.ap-option {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.ap-option:hover {
+  background: var(--surface-alt);
+}
+.ap-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.ap-option:has(input:checked) {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+  background: var(--accent-soft);
+}
+.ap-option:has(input:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.ap-name {
+  font-weight: 600;
+}
+.ap-option:has(input:checked) .ap-name {
+  color: var(--accent-strong);
+}
+.ap-hint {
+  margin: 12px 0 0;
+  font-size: 13px;
+}
+
+/* Mini page previews: a page background with a panel and an accent bar. */
+.ap-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 96px;
+  height: 52px;
+  padding: 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.ap-preview span {
+  display: block;
+  border-radius: 3px;
+}
+.ap-preview span:first-child {
+  flex: 1;
+}
+.ap-preview span:last-child {
+  height: 8px;
+  width: 60%;
+  background: #e8590c;
+}
+.ap-preview-light {
+  background: #f4f5f7;
+}
+.ap-preview-light span:first-child {
+  background: #ffffff;
+}
+.ap-preview-dark {
+  background: #121417;
+}
+.ap-preview-dark span:first-child {
+  background: #262a2f;
+}
+.ap-preview-system {
+  background: linear-gradient(135deg, #f4f5f7 50%, #121417 50%);
+}
+.ap-preview-system span:first-child {
+  background: linear-gradient(135deg, #ffffff 50%, #262a2f 50%);
+}

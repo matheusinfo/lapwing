@@ -1,0 +1,121 @@
+/* ---- Settings: backup & restore ---- */
+
+.bk-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.bk-card .card-title,
+.bk-intro {
+  margin: 0;
+}
+.bk-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.bk-subtitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+.bk-check,
+.bk-mode {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+}
+.bk-check input,
+.bk-mode input {
+  margin: 3px 0 0;
+  accent-color: var(--accent);
+}
+.bk-mode span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.bk-mode small {
+  font-size: 13px;
+}
+.bk-hint {
+  margin: -4px 0 0 24px;
+  font-size: 13px;
+}
+.bk-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bk-drop {
+  padding: 20px 16px;
+}
+.bk-drop-icon {
+  width: 28px;
+  height: 28px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.bk-error {
+  margin: 0;
+  padding: 10px 12px;
+  color: var(--bad);
+  background: color-mix(in srgb, var(--bad) 10%, transparent);
+  border-radius: 8px;
+}
+.bk-preview,
+.bk-result {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: var(--surface-alt);
+  border-radius: 10px;
+}
+.bk-preview p {
+  margin: 0;
+}
+.bk-preview .badge {
+  margin-left: 6px;
+}
+.bk-file-name {
+  overflow-wrap: anywhere;
+}
+.bk-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bk-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.bk-note.warn {
+  color: var(--warn);
+}
+.bk-modes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.bk-card [hidden] {
+  display: none;
+}
+.bk-result-list {
+  margin: 0;
+  padding-left: 18px;
+}
