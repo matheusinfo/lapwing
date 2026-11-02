@@ -1,0 +1,40 @@
+# Lapwing
+
+> Browser-only running app (TypeScript + Vite, no backend, no framework): draw routes on a map (MapLibre + BRouter), import and analyze runs (GPX, FIT or TCX files, plain or `.gz`; the whole Strava account export `.zip`, which needs no subscription; or optional Strava API sync, which requires a paid Strava subscription), training plans with structured workouts and watch export (ICS/TCX/FIT), history with filters, run comparison, goals/race predictions/overload alerts, light/dark theme, backup/restore. All user data stays in the browser (IndexedDB + localStorage, keys prefixed `lapwing:`). UI in pt-BR and en. Formerly called "Route Maker". A shoe-tracking screen exists in `src/screens/gear/` but is disabled (no route or menu entry).
+
+The documentation is a tree under `docs/` written in Brazilian Portuguese. Every page starts with `<!-- docs-tree: <path> | parent: <index> -->`, a breadcrumb, a one-line summary and the related code paths. Start at the root index and descend by summary.
+
+## Start here
+
+- [Documentation map (full tree)](docs/README.md): one line per page
+- [Overview](docs/overview.md): principles, screens and how the pieces fit
+- [Code conventions summary](.github/copilot-instructions.md): rules for code assistants (English)
+
+## Architecture
+
+- [Architecture index](docs/architecture/README.md)
+- [App shell, router and src/ tree](docs/architecture/overview.md)
+- [Data model: IndexedDB stores, types, units](docs/architecture/data-model.md)
+- [Storage keys and Route Maker → Lapwing migration](docs/architecture/storage-and-migration.md)
+- [Route editor internals](docs/architecture/routing-engine.md)
+- [Metrics, predictions and alerts](docs/architecture/analysis-and-metrics.md)
+- [i18n](docs/architecture/i18n.md), [theming](docs/architecture/theming.md), [UI components](docs/architecture/ui-components.md), [external services](docs/architecture/external-services.md)
+
+## Development
+
+- [Setup and commands](docs/development/setup.md)
+- [Testing](docs/development/testing.md)
+- [Conventions](docs/development/conventions.md)
+- [Adding a screen](docs/development/adding-a-screen.md)
+
+## Reference
+
+- [File formats: activity GPX/FIT/TCX import, Strava export archive, ZIP/gzip, plan CSV/JSON, backup, ICS, TCX, FIT](docs/reference/file-formats.md)
+- [Commands and shortcuts](docs/reference/commands.md)
+- [Glossary pt-BR ↔ en](docs/reference/glossary.md)
+
+## User guides
+
+- [Feature guides index](docs/features/README.md)
+- [Analysis: importing files and the Strava archive](docs/features/analysis.md)
+- [Privacy](docs/privacy.md), [FAQ](docs/faq.md)
