@@ -1,0 +1,28 @@
+{
+  "name": "lapwing",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Lapwing: crie rotas de corrida, analise seus treinos e acompanhe sua evolução, tudo no navegador.",
+  "license": "MIT",
+  "author": "Matheus Andrade",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && tsc --noEmit -p tests && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tests",
+    "fixtures": "node scripts/make-fixtures.mjs"
+  },
+  "dependencies": {
+    "chart.js": "^4.6.1",
+    "maplibre-gl": "^6.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "jsdom": "^30.1.3",
+    "typescript": "~5.9",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}
