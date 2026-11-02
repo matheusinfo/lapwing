@@ -1,6 +1,6 @@
 # Lapwing 🐦
 
-**Português** · [English](README.en.md)
+**Português** · [English](README.md)
 
 **Crie rotas de corrida, entenda seus treinos e acompanhe sua evolução, tudo no seu navegador.**
 
