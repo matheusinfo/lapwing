@@ -1,0 +1,251 @@
+/* Gear (shoes) screen. Everything is scoped under .gear-root. */
+
+.gear-root .gear-intro {
+  margin: -8px 0 0;
+}
+
+.gear-root .gear-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 10px 16px;
+}
+
+.gear-root .gear-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.gear-root .gear-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-top: 4px solid var(--good);
+}
+.gear-root .gear-card.gear-worn {
+  border-top-color: var(--warn);
+}
+.gear-root .gear-card.gear-replace {
+  border-top-color: var(--bad);
+}
+.gear-root .gear-card.gear-retired {
+  border-top-color: var(--line);
+  opacity: 0.85;
+}
+
+.gear-root .gear-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.gear-root .gear-card-title {
+  flex: 1;
+  min-width: 0;
+}
+.gear-root .gear-card-title h2 {
+  margin: 0;
+  font-size: 17px;
+  overflow-wrap: anywhere;
+}
+.gear-root .gear-card-title p {
+  margin: 2px 0 0;
+}
+.gear-root .gear-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.gear-root .gear-default {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+
+.gear-root .gear-wear p {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 0 0 6px;
+}
+.gear-root .gear-wear .gear-small {
+  margin: 6px 0 0;
+  font-size: 12px;
+}
+.gear-root .gear-bar {
+  height: 10px;
+  overflow: hidden;
+  background: var(--surface-alt);
+  border-radius: 999px;
+}
+.gear-root .gear-bar span {
+  display: block;
+  height: 100%;
+  background: var(--good);
+  border-radius: inherit;
+}
+.gear-root .gear-worn .gear-bar span {
+  background: var(--warn);
+}
+.gear-root .gear-replace .gear-bar span {
+  background: var(--bad);
+}
+.gear-root .gear-retired .gear-bar span {
+  background: var(--muted);
+}
+
+.gear-root .gear-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+  margin: 0;
+}
+.gear-root .gear-facts div {
+  padding: 8px 10px;
+  background: var(--surface-alt);
+  border-radius: 8px;
+  min-width: 0;
+}
+.gear-root .gear-facts dt {
+  color: var(--muted);
+  font-size: 12px;
+}
+.gear-root .gear-facts dd {
+  margin: 2px 0 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.gear-root .gear-chart {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-items: end;
+  gap: 6px;
+  height: 70px;
+}
+.gear-root .gear-chart-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  height: 100%;
+  min-height: 0;
+  gap: 2px;
+}
+.gear-root .gear-chart-bar {
+  display: block;
+  flex: 0 0 auto;
+  max-height: calc(100% - 16px);
+  background: var(--chart-pace);
+  border-radius: 4px 4px 0 0;
+  opacity: 0.8;
+}
+.gear-root .gear-chart-label {
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.gear-root .gear-notes {
+  margin: 0;
+  white-space: pre-wrap;
+  color: var(--muted);
+}
+
+.gear-root .gear-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.gear-root .gear-retired > summary {
+  cursor: pointer;
+  padding: 6px 0 12px;
+  font-weight: 700;
+}
+
+/* ---- Dialog ---- */
+
+.gear-root .gear-dialog {
+  width: min(560px, calc(100vw - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 0;
+  color: var(--ink);
+  background: var(--surface);
+  border: 0;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.gear-root .gear-dialog::backdrop {
+  background: var(--backdrop);
+}
+.gear-root .gear-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+}
+.gear-root .gear-form h2 {
+  font-size: 18px;
+}
+.gear-root .gear-form-intro {
+  margin: -6px 0 0;
+}
+.gear-root .gear-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.gear-root .gear-form-grid .field input,
+.gear-root .gear-form-grid .field select,
+.gear-root .gear-form-grid .field textarea {
+  width: 100%;
+  min-width: 0;
+}
+.gear-root .gear-form-grid .field small {
+  font-weight: 400;
+}
+.gear-root .gear-form textarea {
+  resize: vertical;
+}
+.gear-root .gear-span2 {
+  grid-column: 1 / -1;
+}
+.gear-root .gear-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gear-root .gear-preview {
+  margin: 0;
+  font-weight: 600;
+}
+.gear-root .gear-form-error {
+  margin: 0;
+  padding: 8px 10px;
+  color: var(--bad-ink);
+  background: var(--bad-soft);
+  border-radius: 8px;
+}
+.gear-root .gear-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+@media (max-width: 640px) {
+  .gear-root .gear-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gear-root .gear-form-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .gear-root .gear-form {
+    padding: 16px;
+  }
+}
