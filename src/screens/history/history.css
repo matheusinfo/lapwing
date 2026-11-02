@@ -1,0 +1,681 @@
+/* History screen. Everything is scoped under .his-root. */
+
+.his-root .his-page {
+  gap: 16px;
+}
+
+/* ---- Period picker (segmented control) ---- */
+
+.his-root .his-range {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.his-root .his-range-btn {
+  height: 30px;
+  padding: 0 12px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.his-root .his-range-btn:hover {
+  color: var(--ink);
+}
+.his-root .his-range-btn[aria-pressed='true'] {
+  color: var(--on-accent);
+  background: var(--accent);
+}
+.his-root .his-range-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---- Totals ---- */
+
+.his-root .his-compare {
+  margin: 0 0 12px;
+  font-size: 13px;
+}
+.his-root .his-totals .stat dd {
+  font-variant-numeric: normal;
+}
+.his-root .his-delta {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Cards grid ---- */
+
+.his-root .his-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.his-root .his-wide {
+  grid-column: 1 / -1;
+}
+.his-root .card-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+}
+.his-root .his-subtle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+/* Fixed height includes the axis band, so no nested scroll. */
+.his-root .his-chart {
+  position: relative;
+  height: 240px;
+}
+.his-root .his-chart-empty {
+  margin: 0;
+  padding: 32px 0;
+  text-align: center;
+}
+.his-root .his-note {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.his-root .his-data {
+  margin-top: 10px;
+  font-size: 13px;
+}
+.his-root .his-data summary {
+  color: var(--muted);
+  cursor: pointer;
+}
+.his-root .his-data .table-wrap {
+  max-height: 260px;
+  margin-top: 6px;
+  overflow: auto;
+}
+
+/* ---- Records ---- */
+
+.his-root .his-records {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.his-root .his-record {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.his-root .his-record:last-child {
+  border-bottom: 0;
+}
+.his-root .his-record-label {
+  font-size: 13px;
+  color: var(--muted);
+}
+.his-root .his-record-value {
+  grid-row: span 2;
+  align-self: center;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: right;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.his-root a.his-record-value:hover {
+  text-decoration: underline;
+}
+.his-root .his-record-meta {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- Consistency calendar ---- */
+
+.his-root .his-calendar-scroll {
+  margin-top: 8px;
+  overflow-x: auto;
+}
+.his-root .his-calendar {
+  display: grid;
+  grid-template-columns: 16px 1fr;
+  grid-template-rows: auto auto;
+  gap: 4px;
+  width: 100%;
+  min-width: calc(var(--his-weeks) * 10px + 20px);
+}
+.his-root .his-months {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(var(--his-weeks), minmax(8px, 18px));
+  gap: 2px;
+  font-size: 11px;
+  color: var(--muted);
+}
+.his-root .his-months span {
+  white-space: nowrap;
+  overflow: visible;
+}
+.his-root .his-weekdays {
+  /* Stays visible while the calendar scrolls sideways on narrow screens. */
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--surface);
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 2px;
+  font-size: 10px;
+  line-height: 1;
+  color: var(--muted);
+}
+.his-root .his-weekdays span {
+  display: flex;
+  align-items: center;
+}
+.his-root .his-weeks {
+  display: grid;
+  grid-template-columns: repeat(var(--his-weeks), minmax(8px, 18px));
+  gap: 2px;
+}
+.his-root .his-week {
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  gap: 2px;
+}
+.his-root .his-cell {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 3px;
+  background: var(--surface-alt);
+}
+/* One hue, from --heat-1 (least) to --heat-4 (most); tokens in style.css per theme. */
+.his-root .his-cell.l1 {
+  background: var(--heat-1);
+}
+.his-root .his-cell.l2 {
+  background: var(--heat-2);
+}
+.his-root .his-cell.l3 {
+  background: var(--heat-3);
+}
+.his-root .his-cell.l4 {
+  background: var(--heat-4);
+}
+.his-root .his-cell.his-future {
+  background: transparent;
+}
+.his-root .his-legend {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.his-root .his-legend .his-cell {
+  width: 12px;
+  height: 12px;
+}
+.his-root .his-legend-scale {
+  margin-left: 8px;
+}
+
+/* ---- Runs table ---- */
+
+.his-root .his-runs-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 8px;
+}
+.his-root .his-runs-header .card-title {
+  flex: 1;
+  margin: 0;
+}
+.his-root #his-search {
+  width: 220px;
+  max-width: 100%;
+}
+
+.his-root .his-table tbody tr {
+  cursor: pointer;
+}
+.his-root .his-table th {
+  padding: 4px 6px;
+}
+.his-root .his-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px;
+  font: inherit;
+  font-weight: 600;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.his-root .his-sort:hover {
+  color: var(--ink);
+}
+.his-root .his-sort:focus-visible {
+  outline: 2px solid var(--accent);
+}
+.his-root .his-sort-arrow {
+  font-size: 9px;
+}
+.his-root th[aria-sort] .his-sort {
+  color: var(--ink);
+}
+.his-root .his-col-name a {
+  display: inline-block;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: bottom;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+}
+.his-root .his-col-name a:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+.his-root .his-col-actions {
+  width: 1%;
+  padding: 0 4px;
+  text-align: right;
+}
+.his-root .his-delete {
+  width: 30px;
+  padding: 0;
+}
+.his-root .his-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+/* ---- Run filters ---- */
+
+.his-root .his-filter-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+.his-root .his-filter-toggle[aria-expanded='true'] {
+  border-color: var(--accent);
+  color: var(--accent-strong);
+}
+.his-root .his-filter-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--on-accent);
+  background: var(--accent);
+  border-radius: 9px;
+}
+.his-root .his-filter-badge[hidden],
+.his-root .his-filter-panel[hidden],
+.his-root .his-compare-bar[hidden] {
+  display: none;
+}
+.his-root .his-filter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding: 14px;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.his-root .his-presets {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.his-root .his-panel-label {
+  margin-right: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.his-root .his-preset {
+  height: 28px;
+  padding: 0 12px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  cursor: pointer;
+}
+.his-root .his-preset:hover {
+  border-color: var(--accent);
+}
+.his-root .his-preset[aria-pressed='true'] {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+.his-root .his-preset:focus-visible,
+.his-root .his-chip-remove:focus-visible,
+.his-root .his-check input:focus-visible + span {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.his-root .his-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px 16px;
+  align-items: start;
+}
+.his-root .his-fieldset {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.his-root .his-fieldset legend {
+  margin-bottom: 4px;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.his-root .his-wide-field {
+  grid-column: 1 / -1;
+}
+.his-root .his-minmax {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.his-root .his-minmax input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+}
+.his-root .his-minmax input[aria-invalid='true'] {
+  border-color: var(--bad);
+}
+.his-root .his-field-error {
+  min-height: 0;
+  margin: 2px 0 0;
+  font-size: 12px;
+  color: var(--bad);
+}
+.his-root .his-field-error:empty {
+  display: none;
+}
+.his-root .his-checks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.his-root .his-check {
+  position: relative;
+  cursor: pointer;
+}
+.his-root .his-check input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.his-root .his-check span {
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  padding: 0 10px;
+  font-size: 13px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+.his-root .his-check input:checked + span {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.his-root .his-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  padding: 0;
+  list-style: none;
+}
+.his-root .his-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  height: 28px;
+  padding: 0 4px 0 10px;
+  font-size: 13px;
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+  border-radius: 14px;
+}
+.his-root .his-chip-remove {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  font: inherit;
+  font-size: 16px;
+  line-height: 1;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.his-root .his-chip-remove:hover {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+}
+.his-root .his-filter-totals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 24px;
+  margin: 0 0 10px;
+  font-size: 13px;
+}
+.his-root .his-filter-totals div {
+  display: flex;
+  gap: 6px;
+}
+.his-root .his-filter-totals dt {
+  color: var(--muted);
+}
+.his-root .his-filter-totals dd {
+  margin: 0;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- Run selection for comparison ---- */
+
+.his-root .his-col-select {
+  width: 1%;
+  padding: 0 4px 0 8px;
+}
+.his-root .his-select {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: var(--accent);
+}
+.his-root .his-compare-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  background: var(--accent-soft);
+  border-radius: 10px;
+}
+
+@media (max-width: 900px) {
+  .his-root .his-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---- Phones: table rows become cards ---- */
+
+@media (max-width: 640px) {
+  .his-root .page-header h1 {
+    flex-basis: 100%;
+  }
+  .his-root .his-range {
+    display: flex;
+    width: 100%;
+  }
+  .his-root .his-range-btn {
+    flex: 1;
+    padding: 0 4px;
+  }
+  .his-root .his-totals .stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .his-root .his-totals .stat.main {
+    grid-column: 1 / -1;
+  }
+  .his-root .his-chart {
+    height: 210px;
+  }
+  .his-root #his-search {
+    width: 100%;
+  }
+  .his-root .his-filter-toggle {
+    flex: 1;
+  }
+  .his-root .his-filter-panel {
+    padding: 12px;
+  }
+  .his-root .his-filter-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .his-root .his-minmax input {
+    font-size: 16px; /* avoids zoom on focus in iOS */
+  }
+  .his-root .his-table tbody tr {
+    position: relative;
+    padding-left: 30px;
+  }
+  .his-root .his-table td.his-col-select {
+    position: absolute;
+    top: 14px;
+    left: 2px;
+    width: auto;
+    padding: 0;
+  }
+
+  .his-root .his-table,
+  .his-root .his-table tbody {
+    display: block;
+  }
+  .his-root .his-table thead {
+    display: none;
+  }
+  .his-root .his-table tbody tr {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px 10px;
+    padding: 12px 2px;
+    border-bottom: 1px solid var(--line);
+  }
+  .his-root .his-table tbody tr:hover {
+    background: none;
+  }
+  .his-root .his-table td {
+    padding: 0;
+    border: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
+  .his-root .his-table td.num {
+    text-align: left;
+  }
+  .his-root .his-table td[data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  /* Header line of the card: name + type, date, delete. */
+  .his-root .his-table td.his-col-name {
+    grid-column: 1 / 4;
+    grid-row: 1;
+  }
+  .his-root .his-table td.his-col-name::before,
+  .his-root .his-table td.his-col-type::before,
+  .his-root .his-table td.his-col-date::before {
+    display: none;
+  }
+  .his-root .his-col-name a {
+    max-width: 100%;
+    font-size: 15px;
+  }
+  .his-root .his-table td.his-col-actions {
+    grid-column: 4;
+    grid-row: 1;
+    width: auto;
+    text-align: right;
+  }
+  .his-root .his-table td.his-col-date {
+    grid-column: 1 / 4;
+    grid-row: 2;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .his-root .his-table td.his-col-type {
+    grid-column: 4;
+    grid-row: 2;
+    text-align: right;
+  }
+}
