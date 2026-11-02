@@ -1,0 +1,216 @@
+/* Compare screen: two runs side by side. Run A is blue, run B orange
+   (same tokens as the charts: --chart-pace and --accent). */
+
+.cmp-page {
+  --cmp-a: var(--chart-pace);
+  --cmp-b: var(--accent);
+}
+
+.cmp-page .cmp-intro {
+  margin: 0 0 10px;
+}
+
+.cmp-page .cmp-pick-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: end;
+  gap: 10px;
+}
+.cmp-page .cmp-pick > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.cmp-page .cmp-pick select {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+}
+.cmp-page .cmp-pick-a select {
+  border-left: 4px solid var(--cmp-a);
+}
+.cmp-page .cmp-pick-b select {
+  border-left: 4px solid var(--cmp-b);
+}
+.cmp-page .cmp-swap {
+  padding: 0 10px;
+}
+
+.cmp-page .cmp-suggest {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 13px;
+}
+.cmp-page .cmp-suggest-btn {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.cmp-page .cmp-dot {
+  display: inline-block;
+  flex: none;
+  width: 10px;
+  height: 10px;
+  margin-right: 4px;
+  border-radius: 50%;
+  vertical-align: baseline;
+}
+.cmp-page .cmp-dot-a {
+  background: var(--cmp-a);
+}
+.cmp-page .cmp-dot-b {
+  background: var(--cmp-b);
+}
+
+.cmp-page .cmp-hint-card {
+  margin: 0;
+}
+.cmp-page .cmp-hint {
+  margin: 8px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* Legend */
+.cmp-page .cmp-legend {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+  padding: 12px 16px;
+}
+.cmp-page .cmp-legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  padding-left: 10px;
+  border-left: 4px solid var(--cmp-a);
+}
+.cmp-page .cmp-legend-b {
+  border-left-color: var(--cmp-b);
+}
+.cmp-page .cmp-legend-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.cmp-page .cmp-legend-slot {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.cmp-page .cmp-legend-text a {
+  overflow: hidden;
+  font-weight: 700;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: none;
+  color: var(--ink);
+}
+.cmp-page .cmp-legend-text a:hover {
+  text-decoration: underline;
+}
+
+/* Tables */
+.cmp-page .cmp-table th[scope='row'] {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.cmp-page .cmp-table small {
+  font-size: 11.5px;
+}
+.cmp-page .cmp-delta {
+  font-weight: 600;
+  color: var(--muted);
+}
+.cmp-page .cmp-delta.cmp-better {
+  color: var(--good);
+}
+.cmp-page .cmp-delta.cmp-worse {
+  color: var(--bad);
+}
+.cmp-page .cmp-partial {
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* Layout */
+.cmp-page .cmp-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: stretch;
+}
+.cmp-page .cmp-map-card {
+  display: flex;
+  flex-direction: column;
+}
+.cmp-page .cmp-map {
+  position: relative;
+  flex: 1;
+  min-height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--surface-alt);
+}
+
+/* Charts */
+.cmp-page .cmp-charts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+.cmp-page .cmp-chart {
+  margin: 0;
+}
+.cmp-page .cmp-chart-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.cmp-page .cmp-chart-canvas {
+  position: relative;
+  height: 150px;
+}
+.cmp-page .cmp-chart:last-child .cmp-chart-canvas {
+  height: 170px;
+}
+
+@media (max-width: 900px) {
+  .cmp-page .cmp-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .cmp-page .cmp-pick-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cmp-page .cmp-swap {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+  .cmp-page .cmp-legend {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .cmp-page .cmp-hide-phone {
+    display: none;
+  }
+  .cmp-page .cmp-chart-canvas {
+    height: 120px;
+  }
+  .cmp-page .cmp-map {
+    min-height: 240px;
+  }
+}
