@@ -1,6 +1,6 @@
 # Lapwing 🐦
 
-[Português](README.md) · **English**
+**Inglês** · [Português](README.pt.md)
 
 **Plan running routes, understand your workouts and track your progress, all in your browser.**
 
