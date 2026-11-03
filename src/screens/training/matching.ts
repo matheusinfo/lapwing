@@ -59,6 +59,35 @@ export function statusOf(w: PlannedWorkout, activity: Activity | undefined, toda
   return w.date < today ? 'missed' : 'upcoming';
 }
 
+/** Whether a run can be linked to this workout by hand (rest days can't hold a run). */
+export const canHoldRun = (w: Pick<PlannedWorkout, 'kind'>) => w.kind !== 'rest';
+
+/**
+ * Links a run to a workout by hand, even when it was run on another day
+ * (e.g. dragged in the week view). The run leaves any other workout of the
+ * plan that was linked to it by hand; the target forgets "unlinked" and
+ * "skipped". Returns only the workouts that changed, ready to save.
+ */
+export function linkRunTo(workouts: PlannedWorkout[], activityId: string, targetId: string): PlannedWorkout[] {
+  const target = workouts.find((w) => w.id === targetId);
+  if (!target || !canHoldRun(target)) return [];
+  const changed: PlannedWorkout[] = [];
+  for (const w of workouts) {
+    if (w.id === targetId) {
+      if (w.linkedActivityId === activityId && !w.unlinked && w.status !== 'skipped') continue;
+      const next: PlannedWorkout = { ...w, linkedActivityId: activityId };
+      delete next.unlinked;
+      if (next.status === 'skipped') delete next.status;
+      changed.push(next);
+    } else if (w.linkedActivityId === activityId) {
+      const next = { ...w };
+      delete next.linkedActivityId;
+      changed.push(next);
+    }
+  }
+  return changed;
+}
+
 /**
  * Pairs planned workouts with imported runs.
  *  1. Manual links win.

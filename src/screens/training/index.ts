@@ -1,7 +1,7 @@
 import './training.css';
 import type { ScreenMount } from '../../app/screen';
 import { currentQuery } from '../../app/router';
-import { getAll, listActivities, onDataChange, remove } from '../../data/db';
+import { getAll, listActivities, onDataChange, putMany, remove } from '../../data/db';
 import type { Activity } from '../../data/types';
 import { onLangChange, t as tg } from '../../i18n';
 import { showToast } from '../../ui/toast';
@@ -11,14 +11,16 @@ import { csvTemplate, exportPlanCsv, jsonTemplate } from './csv';
 import { addDays, isDateStr, localDateOf, todayDate, weekStart } from './dates';
 import { openExportDialog, openGeneratorDialog, openImportDialog, openPlanDialog, openWorkoutDialog, type DialogContext } from './dialogs';
 import { t } from './i18n';
-import { matchWorkouts } from './matching';
+import { linkRunTo, matchWorkouts } from './matching';
 import { computeProgress } from './progress';
 import { easyPaceOf } from './structure';
 import type { PlannedWorkout, TrainingPlan } from './types';
-import { chartCard, compareCard, emptyState, header, planCard, weekCard } from './view';
+import { chartCard, compareCard, emptyState, header, planCard, shortDate, weekCard, workoutTitle } from './view';
 import { confirmDialog } from '../../ui/confirm';
 
 const ACTIVE_PLAN_KEY = 'lapwing:training:active-plan';
+/** dataTransfer type of a run dragged in the week view. */
+const RUN_MIME = 'application/x-lapwing-run';
 
 function downloadText(text: string, fileName: string, type: string): void {
   const url = URL.createObjectURL(new Blob([text], { type }));
@@ -219,6 +221,70 @@ export const mount: ScreenMount = (root) => {
     if (target.id === 'trn-plan') ctx.selectPlan((target as HTMLSelectElement).value);
     render();
   });
+
+  // ---- Drag a run onto a workout (of any day of the week) to link it ----
+
+  let draggedRun: string | null = null;
+  let dropTarget: HTMLElement | null = null;
+  const setDropTarget = (found: HTMLElement | null) => {
+    // Over a day, highlight the workout of that day that will get the run.
+    const el =
+      found?.classList.contains('trn-day')
+        ? [...found.querySelectorAll<HTMLElement>('.trn-wo[data-drop]')].find((c) => c.dataset.drop === found.dataset.drop) ?? found
+        : found;
+    if (el === dropTarget) return;
+    dropTarget?.classList.remove('is-drop-target');
+    dropTarget = el;
+    dropTarget?.classList.add('is-drop-target');
+  };
+  const endDrag = () => {
+    draggedRun = null;
+    setDropTarget(null);
+    page.classList.remove('trn-dragging');
+    page.querySelector('.is-dragging')?.classList.remove('is-dragging');
+  };
+
+  async function linkRun(activityId: string, workoutId: string): Promise<void> {
+    const plan = activePlan();
+    const changed = linkRunTo(workouts.filter((w) => w.planId === plan.id), activityId, workoutId);
+    if (!changed.length) return;
+    await putMany('workouts', changed);
+    const target = changed.find((w) => w.id === workoutId)!;
+    showToast(t('runLinked', { workout: workoutTitle(target), date: shortDate(target.date) }));
+  }
+
+  page.addEventListener('dragstart', (e) => {
+    const el = (e.target as HTMLElement).closest<HTMLElement>('[data-run]');
+    if (!el || !e.dataTransfer) return;
+    draggedRun = el.dataset.run!;
+    e.dataTransfer.setData(RUN_MIME, draggedRun);
+    e.dataTransfer.effectAllowed = 'move';
+    el.classList.add('is-dragging');
+    page.classList.add('trn-dragging');
+  });
+  page.addEventListener('dragover', (e) => {
+    if (!draggedRun) return;
+    const target = (e.target as HTMLElement).closest<HTMLElement>('[data-drop]');
+    setDropTarget(target);
+    if (!target) return;
+    e.preventDefault();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+  });
+  page.addEventListener('dragleave', (e) => {
+    if (dropTarget && !dropTarget.contains(e.relatedTarget as Node | null)) setDropTarget(null);
+  });
+  page.addEventListener('drop', (e) => {
+    const target = (e.target as HTMLElement).closest<HTMLElement>('[data-drop]');
+    const run = draggedRun;
+    endDrag();
+    if (!run || !target) return;
+    e.preventDefault();
+    linkRun(run, target.dataset.drop!).catch((err) => {
+      console.error(err);
+      showToast(String(err), 'error');
+    });
+  });
+  page.addEventListener('dragend', endDrag);
 
   const onHash = () => {
     if (location.hash.startsWith('#/training')) render();

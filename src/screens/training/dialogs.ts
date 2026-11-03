@@ -67,10 +67,29 @@ export function openWorkoutDialog(
 ): void {
   const w = opts.workout;
   const date = w?.date ?? opts.date ?? ctx.today();
-  const runsThatDay = w ? ctx.activities().filter((a) => localDateOf(a.startTime) === w.date) : [];
+  // Runs of the workout's week (a run may be linked to another day's workout),
+  // plus the linked run wherever it is, so saving never drops the link.
+  const wkStart = w ? weekStart(w.date) : '';
+  const wkEnd = w ? addDays(wkStart, 6) : '';
+  const runsThatDay = w
+    ? ctx
+        .activities()
+        .filter((a) => {
+          const d = localDateOf(a.startTime);
+          return (
+            d === w.date ||
+            (d >= wkStart && d <= wkEnd && (a.type === 'run' || a.type === 'trail-run')) ||
+            a.id === w.linkedActivityId
+          );
+        })
+        .sort((a, b) => a.startTime - b.startTime)
+    : [];
   const linkValue = w?.linkedActivityId ?? (w?.unlinked ? 'none' : 'auto');
-  const time = (a: Activity) =>
-    new Intl.DateTimeFormat(getLang(), { hour: '2-digit', minute: '2-digit' }).format(a.startTime);
+  const time = (a: Activity) => {
+    const d = localDateOf(a.startTime);
+    const hm = new Intl.DateTimeFormat(getLang(), { hour: '2-digit', minute: '2-digit' }).format(a.startTime);
+    return d === w?.date ? hm : `${shortDate(d)} ${hm}`;
+  };
   const linkOptions = [
     `<option value="auto" ${linkValue === 'auto' ? 'selected' : ''}>${t('linkAuto')}</option>`,
     `<option value="none" ${linkValue === 'none' ? 'selected' : ''}>${t('linkNone')}</option>`,

@@ -4,7 +4,7 @@ import { formatDistance, formatDuration, formatNumber, formatPace } from '../../
 import { getLang } from '../../i18n';
 import { addDays, dateToMs, localDateOf, weekStart } from './dates';
 import { t } from './i18n';
-import { manualDoneDistance, plannedDistance, type MatchResult, type WorkoutResult } from './matching';
+import { canHoldRun, manualDoneDistance, plannedDistance, type MatchResult, type WorkoutResult } from './matching';
 import type { PlanProgress, WeekVolume } from './progress';
 import { estimateStep, flattenSteps, OPEN_STEP_SECONDS, stepKindLabel, stepsSummary, stepText } from './structure';
 import { PLAN_GOALS, WORKOUT_KINDS, type PlannedWorkout, type TrainingPlan, type WorkoutKind, type WorkoutStatus, type WorkoutStep } from './types';
@@ -160,10 +160,11 @@ function workoutChip(r: WorkoutResult): string {
   const w = r.workout;
   const target = targetText(w);
   const run = r.activity
-    ? `<a class="trn-run" href="#/activity/${encodeURIComponent(r.activity.id)}">${icon('check')}${esc(runText(r.activity))}</a>`
+    ? `<a class="trn-run" href="#/activity/${encodeURIComponent(r.activity.id)}" draggable="true" data-run="${esc(r.activity.id)}" title="${esc(t('dragRunHint'))}">${icon('check')}${esc(runText(r.activity))}</a>`
     : '';
+  const drop = canHoldRun(w) ? ` data-drop="${esc(w.id)}"` : '';
   return `
-    <div class="trn-wo trn-kind-${w.kind} trn-st-${r.status}">
+    <div class="trn-wo trn-kind-${w.kind} trn-st-${r.status}"${drop}>
       <button class="trn-wo-main" type="button" data-action="edit-workout" data-id="${esc(w.id)}" title="${t('editWorkout')}">
         <span class="trn-wo-kind">${kindLabel(w.kind)}</span>
         <span class="trn-wo-title">${esc(workoutTitle(w))}</span>
@@ -191,14 +192,19 @@ export function weekCard(d: WeekData): string {
     const extras = d.runs.filter((a) => localDateOf(a.startTime, d.timeZone) === date && !d.match.byActivity.has(a.id));
     const extraHtml = extras
       .map(
-        (a) => `<a class="trn-extra" href="#/activity/${encodeURIComponent(a.id)}">
+        (a) => `<a class="trn-extra" href="#/activity/${encodeURIComponent(a.id)}" draggable="true" data-run="${esc(a.id)}" title="${esc(t('dragRunHint'))}">
           <span class="badge">${t('extra')}</span><span>${esc(runText(a))}</span></a>`,
       )
       .join('');
     const classes = ['trn-day', date === d.today ? 'is-today' : '', date < d.today ? 'is-past' : ''].join(' ');
+    // Dropping a run anywhere on the day links it to the day's first workout
+    // still waiting for a run (or its first non-rest workout).
+    const holders = results.filter((r) => canHoldRun(r.workout));
+    const dayTarget = holders.find((r) => !r.activity) ?? holders[0];
+    const dayDrop = dayTarget ? ` data-drop="${esc(dayTarget.workout.id)}"` : '';
     const longDate = new Intl.DateTimeFormat(getLang(), { weekday: 'long', day: 'numeric', month: 'long' }).format(dateToMs(date));
     dayHtml.push(`
-      <div class="${classes}">
+      <div class="${classes}"${dayDrop}>
         <div class="trn-day-head">
           <span class="trn-day-name">${esc(weekdayName(date))}</span>
           <span class="trn-day-num">${esc(shortDate(date))}</span>

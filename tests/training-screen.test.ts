@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { Activity } from '../src/data/types';
 import { addDays, diffDays, isDateStr, localDateOf, parseDateInput, weekday, weekStart } from '../src/screens/training/dates';
-import { manualDoneDistance, matchWorkouts, plannedDistance } from '../src/screens/training/matching';
+import { linkRunTo, manualDoneDistance, matchWorkouts, plannedDistance } from '../src/screens/training/matching';
 import { computeProgress } from '../src/screens/training/progress';
 import { generatePlan, TEMPLATES, type GenText } from '../src/screens/training/generator';
 import { csvTemplate, exportPlanCsv, jsonTemplate, parseDuration, parsePlanCsv, parsePlanFile, parsePlanJson, splitCsv } from '../src/screens/training/csv';
@@ -123,6 +123,40 @@ describe('matchWorkouts', () => {
     expect(m.byWorkout.get('strength')!.status).toBe('done');
     expect(m.byWorkout.get('stale')!.activity?.id).toBe(a3.id);
     expect(m.extras.map((a) => a.id)).toEqual([a2.id]);
+  });
+
+  it('links a run done on another day by hand, moving it between workouts', () => {
+    const mon = run('2026-10-12', 13);
+    const tue = wo('tue', '2026-10-13', 'easy', 8, { unlinked: true });
+    const sun = wo('sun', '2026-10-18', 'long', 14, { status: 'skipped' });
+    const rest = wo('rest', '2026-10-12', 'rest');
+    let ws = [rest, tue, sun];
+    expect(matchWorkouts(ws, [mon], today, TZ).extras).toEqual([mon]);
+
+    const apply = (changed: PlannedWorkout[]) => ws.map((w) => changed.find((c) => c.id === w.id) ?? w);
+    const first = linkRunTo(ws, mon.id, 'tue');
+    expect(first.map((w) => w.id)).toEqual(['tue']);
+    expect(first[0]).toMatchObject({ linkedActivityId: mon.id });
+    expect(first[0].unlinked).toBeUndefined();
+    ws = apply(first);
+    let m = matchWorkouts(ws, [mon], today, TZ);
+    expect(m.byWorkout.get('tue')!).toMatchObject({ status: 'done', manual: true, activity: mon });
+    expect(m.extras).toEqual([]);
+
+    // Moving it on to Sunday frees Tuesday and clears Sunday's "skipped".
+    const second = linkRunTo(ws, mon.id, 'sun');
+    expect(second.map((w) => w.id).sort()).toEqual(['sun', 'tue']);
+    ws = apply(second);
+    expect(ws.find((w) => w.id === 'tue')!.linkedActivityId).toBeUndefined();
+    expect(ws.find((w) => w.id === 'sun')!.status).toBeUndefined();
+    m = matchWorkouts(ws, [mon], today, TZ);
+    expect(m.byWorkout.get('sun')!.activity?.id).toBe(mon.id);
+    expect(m.byWorkout.get('tue')!.status).toBe('missed');
+
+    // No-ops: same target again, rest days and unknown workouts.
+    expect(linkRunTo(ws, mon.id, 'sun')).toEqual([]);
+    expect(linkRunTo(ws, mon.id, 'rest')).toEqual([]);
+    expect(linkRunTo(ws, mon.id, 'nope')).toEqual([]);
   });
 
   it('ignores walks for automatic matching', () => {

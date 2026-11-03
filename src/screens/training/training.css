@@ -313,6 +313,26 @@
   border-color: var(--accent);
 }
 
+/* Drag a run (extra or linked) onto a workout to link it. */
+[data-run][draggable='true'] {
+  cursor: grab;
+}
+[data-run].is-dragging {
+  opacity: 0.45;
+}
+.trn-dragging .trn-wo[data-drop] {
+  outline: 1px dashed color-mix(in srgb, var(--accent) 55%, transparent);
+  outline-offset: 1px;
+}
+.trn-day.is-drop-target {
+  border-color: var(--accent);
+}
+.trn-wo.is-drop-target {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  background: var(--accent-soft);
+}
+
 /* ---- Chart ---- */
 
 .trn-chart {
