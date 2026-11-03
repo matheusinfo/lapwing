@@ -167,6 +167,12 @@ describe('training week drag and drop', () => {
     expect(chip('long-sun').querySelector('.trn-run[data-run="next-mon"]')).not.toBeNull();
   });
 
+  it('counts missed workouts as closed in the plan breakdown', () => {
+    // Both running workouts are in the past without a run: missed, but no longer pending.
+    const head = root.querySelector('.trn-breakdown-head .muted')!;
+    expect(head.textContent).toBe('2 of 2 closed');
+  });
+
   it('ignores drags that are not runs', async () => {
     const over = drag('dragover', chip('easy-tue'));
     expect(over.defaultPrevented).toBe(false);

@@ -161,7 +161,7 @@ interface Part {
 }
 
 /** A stacked bar (width ∝ value) plus a legend with every value spelled out. */
-function breakdown(title: string, summary: string, parts: Part[], footer = ''): string {
+function breakdown(title: string, summary: string, parts: Part[], footer = '', summaryHint = ''): string {
   const sum = parts.reduce((s, p) => s + p.value, 0);
   const bar = parts
     .filter((p) => p.value > 0)
@@ -181,7 +181,7 @@ function breakdown(title: string, summary: string, parts: Part[], footer = ''): 
     <section class="trn-breakdown">
       <header class="trn-breakdown-head">
         <h3>${esc(title)}</h3>
-        <span class="muted">${esc(summary)}</span>
+        <span class="muted"${summaryHint ? ` title="${esc(summaryHint)}"` : ''}>${esc(summary)}</span>
       </header>
       <div class="trn-segbar" role="img" aria-label="${esc(`${title}: ${aria}`)}">${sum > 0 ? bar : ''}</div>
       <dl class="trn-legend">${items}</dl>
@@ -198,7 +198,9 @@ function workoutsBreakdown(p: PlanProgress): string {
     { tone: 'pending', label: t('bdPending'), value: p.upcoming, text: n(p.upcoming), hint: t('bdPendingHint') },
   ];
   if (p.skipped) parts.splice(3, 0, { tone: 'skipped', label: t('bdSkipped'), value: p.skipped, text: n(p.skipped) });
-  return breakdown(t('bdWorkouts'), t('bdWorkoutsOf', { done: n(p.done + p.partial), total: n(p.total) }), parts);
+  // Closed = no longer pending (done, partial, missed or skipped), so it reaches the total at the end of the plan.
+  const closed = p.done + p.partial + p.missed + p.skipped;
+  return breakdown(t('bdWorkouts'), t('bdWorkoutsOf', { done: n(closed), total: n(p.total) }), parts, '', t('bdWorkoutsOfHint'));
 }
 
 function distanceBreakdown(p: PlanProgress): string {
