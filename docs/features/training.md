@@ -51,7 +51,7 @@ A distância e a duração do treino são estimadas a partir das etapas (aparece
 ### 4. Acompanhar a semana
 
 - **Cartão do plano**: barra de progresso e os números **Plano concluído**, **Treinos feitos**, **Distância feita** (“de *X* km” planejados), **Consistência** (treinos feitos entre os que já passaram) e **Sequência** (treinos feitos seguidos). Com data de prova, mostra quantos dias faltam.
-- **Semana**: os 7 dias, de segunda a domingo, com cada treino e a sua situação. Correu em outro dia? **Arraste** a corrida (uma **Corrida extra** ou a corrida já ligada a um treino) até o treino certo, mesmo que seja de outro dia da semana: ela passa a valer para aquele treino. Soltar no dia, fora de um treino, liga a corrida ao primeiro treino daquele dia ainda sem corrida. Use as setas **Semana anterior** / **Próxima semana** e **Hoje** para voltar à semana atual. Etiquetas **Esta semana** e **Semana leve** aparecem quando cabem. No topo: **Planejado**, **Corrido** e **Treinos feitos**.
+- **Semana**: os 7 dias, de segunda a domingo, com cada treino e a sua situação. Correu em outro dia? **Arraste** a corrida (uma **Corrida extra** ou a corrida já ligada a um treino) até o treino certo, mesmo que seja de outro dia da semana: ela passa a valer para aquele treino. Soltar no dia, fora de um treino, liga a corrida ao primeiro treino daquele dia ainda sem corrida. Use **1 semana** / **2 semanas** para ver uma ou duas semanas de cada vez (a escolha fica salva neste navegador); com **2 semanas** dá para arrastar uma corrida de uma semana para a outra, como o longão de domingo feito na segunda seguinte. Use as setas **Semana anterior** / **Próxima semana** (que andam uma semana) e **Hoje** para voltar à semana atual. Etiquetas **Esta semana** e **Semana leve** aparecem quando cabem. No topo: **Planejado**, **Corrido** e **Treinos feitos**.
 - **Distância semanal: planejado x corrido**: gráfico de barras do plano inteiro. Clique numa semana para ir até ela. **Ver como tabela** mostra os números.
 - **Corridas x metas**: as últimas 12 corridas ligadas a treinos, com a meta, o que você fez e **Pace x meta** (**Na meta** quando a diferença é de até 10 s/km).
 
@@ -80,7 +80,7 @@ Para **um treino só**, abra o treino e use **Exportar treino**: **FIT (relógio
 ## Detalhes
 
 - **Ligação automática com corridas.** Para cada dia, o app liga cada treino de corrida à corrida daquele dia com distância mais parecida com a meta. Só entram treinos dos tipos leve, longão, tempo, intervalado, regenerativo e prova, e corridas do tipo corrida ou trail. Descanso, fortalecimento e treinos pulados nunca são ligados.
-- **Ligação à mão** (**Corrida vinculada**, ou arrastar a corrida até o treino) sempre vence a automática e pode ser com uma corrida de qualquer dia da mesma semana. Uma corrida fica ligada a um só treino: arrastá-la para outro treino a tira do anterior. Ligar uma corrida a um treino **Pulado** volta a situação dele para automática. Treinos de descanso não recebem corrida. **Nenhuma (não vincular corrida)** impede a ligação para aquele treino; **Automático** desfaz a ligação à mão.
+- **Ligação à mão** (**Corrida vinculada**, ou arrastar a corrida até o treino) sempre vence a automática e pode ser com uma corrida de outro dia: arrastando, qualquer dia visível na tela; em **Corrida vinculada**, até 7 dias antes ou depois do treino. Uma corrida fica ligada a um só treino: arrastá-la para outro treino a tira do anterior. Ligar uma corrida a um treino **Pulado** volta a situação dele para automática. Treinos de descanso não recebem corrida. **Nenhuma (não vincular corrida)** impede a ligação para aquele treino; **Automático** desfaz a ligação à mão.
 - **Situações:**
   - **Feito**: há corrida ligada com pelo menos 80% da meta (ou o treino foi marcado à mão).
   - **Parcial**: há corrida ligada, mas com menos de 80% da distância planejada (ou do tempo, quando não há distância).
@@ -115,7 +115,7 @@ Para **um treino só**, abra o treino e use **Exportar treino**: **FIT (relógio
 - Gere o plano e depois ajuste os dias que não combinam com a sua rotina.
 - Fez um treino na esteira e não tem GPS? Use **Marcar como feito**.
 - Duas corridas no mesmo dia? Escolha a certa em **Corrida vinculada**.
-- Trocou o treino de dia (por exemplo, fez na segunda o leve de terça)? Arraste a **Corrida extra** até o treino de terça.
+- Trocou o treino de dia (por exemplo, fez na segunda o leve de terça)? Arraste a **Corrida extra** até o treino de terça. Se o treino era da semana anterior, mude para **2 semanas** antes de arrastar.
 - Antes de trocar de aparelho, exporte o plano em **Lapwing (.json)** ou faça um backup completo.
 
 ## Perguntas comuns

@@ -84,6 +84,7 @@ let cleanup: (() => void) | void;
 beforeAll(() => setLang('en'));
 beforeEach(async () => {
   toasts.length = 0;
+  localStorage.clear();
   store.plans = [plan];
   store.workouts = [wo('rest-mon', '2026-10-12', 'rest'), wo('easy-tue', '2026-10-13', 'easy', 8), wo('long-sun', '2026-10-18', 'long', 14)];
   store.activities = [monRun];
@@ -140,6 +141,30 @@ describe('training week drag and drop', () => {
     expect(sun.linkedActivityId).toBe('mon-run');
     expect(chip('long-sun').querySelector('.trn-run')).not.toBeNull();
     expect(chip('easy-tue').classList.contains('trn-st-missed')).toBe(true);
+  });
+
+  it('shows two weeks so a run can go to the previous week', async () => {
+    // Sunday's long run was done on the next Monday.
+    const nextMon: Activity = { ...monRun, id: 'next-mon', startTime: local('2026-10-19', 7), summary: { ...monRun.summary, distance: 14200 } };
+    store.activities = [nextMon];
+    dataListeners.forEach((fn) => fn('activities'));
+    await flush();
+    expect(root.querySelector('.trn-extra')).toBeNull(); // Not in the 1-week view.
+
+    root.querySelector<HTMLElement>('[data-action="week-span"][data-span="2"]')!.click();
+    expect(root.querySelectorAll('.trn-day')).toHaveLength(14);
+    expect(root.querySelectorAll('.trn-week-row')).toHaveLength(2);
+    expect(localStorage.getItem('lapwing:training:week-span')).toBe('2');
+
+    drag('dragstart', root.querySelector('.trn-extra[data-run="next-mon"]')!);
+    drag('drop', chip('long-sun'));
+    await flush();
+    expect((store.workouts[2] as PlannedWorkout).linkedActivityId).toBe('next-mon');
+    expect(chip('long-sun').classList.contains('trn-st-done')).toBe(true);
+
+    root.querySelector<HTMLElement>('[data-action="week-span"][data-span="1"]')!.click();
+    expect(root.querySelectorAll('.trn-day')).toHaveLength(7);
+    expect(chip('long-sun').querySelector('.trn-run[data-run="next-mon"]')).not.toBeNull();
   });
 
   it('ignores drags that are not runs', async () => {

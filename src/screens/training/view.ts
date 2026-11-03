@@ -64,10 +64,14 @@ export const shortDate = (d: string) =>
 
 const weekdayName = (d: string) => new Intl.DateTimeFormat(getLang(), { weekday: 'short' }).format(dateToMs(d));
 
-export function weekRangeLabel(start: string): string {
+export function weekRangeLabel(start: string, weeks = 1): string {
   const fmt = new Intl.DateTimeFormat(getLang(), { day: 'numeric', month: 'short', year: 'numeric' });
-  return fmt.formatRange(dateToMs(start), dateToMs(addDays(start, 6)));
+  return fmt.formatRange(dateToMs(start), dateToMs(addDays(start, 7 * weeks - 1)));
 }
+
+/** How many weeks the week card shows at once. */
+export const WEEK_SPANS = [1, 2] as const;
+export type WeekSpan = (typeof WEEK_SPANS)[number];
 
 // ---- Page sections ----
 
@@ -146,14 +150,19 @@ export function planCard(plans: TrainingPlan[], plan: TrainingPlan, progress: Pl
 }
 
 export interface WeekData {
+  /** Monday of the first week shown. */
   start: string;
+  /** Weeks shown, one row each (runs can be dragged across them). */
+  span: WeekSpan;
   today: string;
+  /** Workouts in the shown range. */
   workouts: PlannedWorkout[];
   match: MatchResult;
-  /** All runs in this week (any plan). */
+  /** All runs in the shown range (any plan). */
   runs: Activity[];
   timeZone?: string;
-  deload: boolean;
+  /** Whether each shown week is an easier (deload) week. */
+  deload: boolean[];
 }
 
 function workoutChip(r: WorkoutResult): string {
@@ -179,8 +188,18 @@ export function weekCard(d: WeekData): string {
   const isThisWeek = d.start === weekStart(d.today);
   const dayHtml: string[] = [];
   let planned = 0, doneCount = 0, countable = 0;
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 7 * d.span; i++) {
     const date = addDays(d.start, i);
+    if (d.span > 1 && i % 7 === 0) {
+      // A label row above each week when several are shown.
+      const wk = Math.floor(i / 7);
+      dayHtml.push(`
+      <div class="trn-week-row">
+        <span>${esc(weekRangeLabel(date))}</span>
+        ${date === weekStart(d.today) ? `<span class="badge good">${t('thisWeek')}</span>` : ''}
+        ${d.deload[wk] ? `<span class="badge">${t('weekPhase_deload')}</span>` : ''}
+      </div>`);
+    }
     const ws = d.workouts.filter((w) => w.date === date);
     const results = ws.map((w) => d.match.byWorkout.get(w.id)!);
     for (const r of results) {
@@ -219,13 +238,18 @@ export function weekCard(d: WeekData): string {
     d.runs.reduce((s, a) => s + a.summary.distance, 0) +
     d.workouts.reduce((s, w) => s + manualDoneDistance(d.match.byWorkout.get(w.id)!), 0);
   const empty = !d.workouts.length && !d.runs.length;
+  const spanButtons = WEEK_SPANS.map(
+    (n) =>
+      `<button class="btn small ${n === d.span ? 'is-active' : ''}" type="button" data-action="week-span" data-span="${n}" aria-pressed="${n === d.span}">${t(n === 1 ? 'spanOne' : 'spanMany', { n })}</button>`,
+  ).join('');
   return `
     <section class="card trn-weekcard">
       <div class="trn-week-head">
-        <h2 class="card-title">${esc(weekRangeLabel(d.start))}</h2>
-        ${isThisWeek ? `<span class="badge good">${t('thisWeek')}</span>` : ''}
-        ${d.deload ? `<span class="badge">${t('weekPhase_deload')}</span>` : ''}
+        <h2 class="card-title">${esc(weekRangeLabel(d.start, d.span))}</h2>
+        ${d.span === 1 && isThisWeek ? `<span class="badge good">${t('thisWeek')}</span>` : ''}
+        ${d.span === 1 && d.deload[0] ? `<span class="badge">${t('weekPhase_deload')}</span>` : ''}
         <div class="trn-week-nav">
+          <div class="trn-week-span" role="group" aria-label="${esc(t('spanLabel'))}">${spanButtons}</div>
           <button class="btn small" type="button" data-action="week-prev" title="${t('prevWeek')}" aria-label="${t('prevWeek')}">${icon('left')}</button>
           <button class="btn small" type="button" data-action="week-today" ${isThisWeek ? 'disabled' : ''}>${t('today')}</button>
           <button class="btn small" type="button" data-action="week-next" title="${t('nextWeek')}" aria-label="${t('nextWeek')}">${icon('right')}</button>

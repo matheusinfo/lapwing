@@ -67,10 +67,11 @@ export function openWorkoutDialog(
 ): void {
   const w = opts.workout;
   const date = w?.date ?? opts.date ?? ctx.today();
-  // Runs of the workout's week (a run may be linked to another day's workout),
-  // plus the linked run wherever it is, so saving never drops the link.
-  const wkStart = w ? weekStart(w.date) : '';
-  const wkEnd = w ? addDays(wkStart, 6) : '';
+  // Runs up to a week before or after the workout (a run may be linked to
+  // another day's workout, even across weeks), plus the linked run wherever
+  // it is, so saving never drops the link.
+  const linkFrom = w ? addDays(w.date, -7) : '';
+  const linkTo = w ? addDays(w.date, 7) : '';
   const runsThatDay = w
     ? ctx
         .activities()
@@ -78,7 +79,7 @@ export function openWorkoutDialog(
           const d = localDateOf(a.startTime);
           return (
             d === w.date ||
-            (d >= wkStart && d <= wkEnd && (a.type === 'run' || a.type === 'trail-run')) ||
+            (d >= linkFrom && d <= linkTo && (a.type === 'run' || a.type === 'trail-run')) ||
             a.id === w.linkedActivityId
           );
         })

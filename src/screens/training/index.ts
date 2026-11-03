@@ -15,10 +15,11 @@ import { linkRunTo, matchWorkouts } from './matching';
 import { computeProgress } from './progress';
 import { easyPaceOf } from './structure';
 import type { PlannedWorkout, TrainingPlan } from './types';
-import { chartCard, compareCard, emptyState, header, planCard, shortDate, weekCard, workoutTitle } from './view';
+import { chartCard, compareCard, emptyState, header, planCard, shortDate, WEEK_SPANS, weekCard, workoutTitle, type WeekSpan } from './view';
 import { confirmDialog } from '../../ui/confirm';
 
 const ACTIVE_PLAN_KEY = 'lapwing:training:active-plan';
+const WEEK_SPAN_KEY = 'lapwing:training:week-span';
 /** dataTransfer type of a run dragged in the week view. */
 const RUN_MIME = 'application/x-lapwing-run';
 
@@ -51,6 +52,22 @@ function saveActivePlan(id: string): void {
   }
 }
 
+function loadWeekSpan(): WeekSpan {
+  try {
+    const n = Number(localStorage.getItem(WEEK_SPAN_KEY));
+    return (WEEK_SPANS as readonly number[]).includes(n) ? (n as WeekSpan) : 1;
+  } catch {
+    return 1;
+  }
+}
+function saveWeekSpan(n: WeekSpan): void {
+  try {
+    localStorage.setItem(WEEK_SPAN_KEY, String(n));
+  } catch {
+    // Not important.
+  }
+}
+
 /** Training plans: create, generate, import, and follow progress against imported runs. */
 export const mount: ScreenMount = (root) => {
   root.classList.add('trn-root');
@@ -65,6 +82,7 @@ export const mount: ScreenMount = (root) => {
   let workouts: PlannedWorkout[] = [];
   let activities: Activity[] = [];
   let activePlanId = loadActivePlan();
+  let weekSpan = loadWeekSpan();
   let chart: Chart | null = null;
   let loadId = 0;
   let loaded = false;
@@ -105,20 +123,24 @@ export const mount: ScreenMount = (root) => {
     const match = matchWorkouts(planWorkouts, activities, now);
     const progress = computeProgress(plan, planWorkouts, activities, match, now);
     const week = currentWeek();
-    const weekEnd = addDays(week, 6);
+    const weekEnd = addDays(week, 7 * weekSpan - 1);
     const weekRuns = activities.filter((a) => {
       const d = localDateOf(a.startTime);
       return d >= week && d <= weekEnd && (a.type === 'run' || a.type === 'trail-run');
     });
     // An easier week in a generated plan: about 75 % of the previous week's planned km.
-    const idx = progress.weeks.findIndex((w) => w.start === week);
-    const deload = idx > 0 && progress.weeks[idx].planned > 0 && progress.weeks[idx].planned < 0.85 * progress.weeks[idx - 1].planned && !!plan.raceDate && week < weekStart(plan.raceDate) && idx < progress.weeks.length - 2;
+    const isDeload = (start: string) => {
+      const idx = progress.weeks.findIndex((w) => w.start === start);
+      return idx > 0 && progress.weeks[idx].planned > 0 && progress.weeks[idx].planned < 0.85 * progress.weeks[idx - 1].planned && !!plan.raceDate && start < weekStart(plan.raceDate) && idx < progress.weeks.length - 2;
+    };
+    const deload = Array.from({ length: weekSpan }, (_, i) => isDeload(addDays(week, 7 * i)));
 
     page.innerHTML = [
       header(),
       planCard(plans, plan, progress),
       weekCard({
         start: week,
+        span: weekSpan,
         today: now,
         workouts: planWorkouts.filter((w) => w.date >= week && w.date <= weekEnd),
         match,
@@ -182,10 +204,17 @@ export const mount: ScreenMount = (root) => {
     'week-prev': () => setWeek(addDays(currentWeek(), -7)),
     'week-next': () => setWeek(addDays(currentWeek(), 7)),
     'week-today': () => setWeek(null),
+    'week-span': (el) => {
+      const n = Number(el.dataset.span) as WeekSpan;
+      if (!WEEK_SPANS.includes(n) || n === weekSpan) return;
+      weekSpan = n;
+      saveWeekSpan(n);
+      render();
+    },
     'add-workout': (el) => {
       const week = currentWeek();
       const now = today();
-      const fallback = now >= week && now <= addDays(week, 6) ? now : week;
+      const fallback = now >= week && now <= addDays(week, 7 * weekSpan - 1) ? now : week;
       const plan = activePlan();
       const easyPace = easyPaceOf(workouts.filter((w) => w.planId === plan.id));
       openWorkoutDialog(ctx, plan, { date: el.dataset.date ?? fallback, easyPace });

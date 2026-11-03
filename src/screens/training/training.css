@@ -123,6 +123,43 @@
   padding: 0 8px;
 }
 
+/* 1 / 2 weeks toggle. */
+.trn-week-span {
+  display: inline-flex;
+  margin-right: 4px;
+}
+.trn-week-span .btn {
+  border-radius: 0;
+}
+.trn-week-span .btn:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.trn-week-span .btn:last-child {
+  border-radius: 0 8px 8px 0;
+  margin-left: -1px;
+}
+.trn-week-span .btn.is-active {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  position: relative;
+}
+
+/* Label above each week when several weeks are shown. */
+.trn-week-row {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.trn-week-row:first-child {
+  margin-top: 0;
+}
+
 .trn-week-summary {
   display: flex;
   flex-wrap: wrap;
@@ -714,11 +751,20 @@
     text-overflow: ellipsis;
   }
   .trn-week-nav {
+    flex-wrap: wrap;
     width: 100%;
     margin-left: 0;
   }
   .trn-week-nav .btn.primary {
     margin-left: auto;
+  }
+  /* The weeks toggle gets its own line on phones. */
+  .trn-week-span {
+    flex: 1 1 100%;
+    margin-right: 0;
+  }
+  .trn-week-span .btn {
+    flex: 1;
   }
   .trn-plan-select {
     flex: 1 1 100%;
