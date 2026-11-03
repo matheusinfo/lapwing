@@ -95,11 +95,121 @@
   border-radius: 999px;
 }
 
-.trn-of {
-  display: block;
+/* KPI row: three tiles side by side. */
+.trn-kpis {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Workouts / distance breakdowns: stacked bar + legend with every number. */
+.trn-breakdowns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+.trn-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--surface-alt);
+  border-radius: 10px;
+  min-width: 0;
+}
+.trn-breakdown-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+.trn-breakdown-head h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+.trn-breakdown-head .muted {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.trn-segbar {
+  display: flex;
+  gap: 2px;
+  height: 10px;
+  background: var(--surface);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.trn-seg {
+  flex-basis: 0;
+  min-width: 4px;
+}
+.trn-legend {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
+  gap: 8px 12px;
+  margin: 0;
+}
+.trn-legend-item {
+  min-width: 0;
+}
+.trn-legend-item dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   font-size: 12px;
-  font-weight: 500;
   color: var(--muted);
+}
+.trn-legend-item dd {
+  margin: 1px 0 0 14px;
+  font-size: 17px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.trn-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.trn-seg-done { background: var(--good); }
+.trn-seg-partial { background: var(--warn); }
+.trn-seg-missed { background: var(--bad); }
+.trn-seg-skipped {
+  background: repeating-linear-gradient(135deg, var(--muted) 0 3px, transparent 3px 6px);
+}
+.trn-dot.trn-seg-skipped { background: var(--muted); }
+.trn-seg-pending { background: color-mix(in srgb, var(--muted) 40%, transparent); }
+.trn-possible {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 0;
+  padding-top: 8px;
+  font-size: 13px;
+  border-top: 1px solid var(--line);
+}
+.trn-possible strong {
+  font-size: 17px;
+  color: var(--accent-strong);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 760px) {
+  .trn-breakdowns {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  /* "Plan completed" gets its own row; the two other tiles share the next. */
+  .trn-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .trn-kpis .stat.main {
+    grid-column: 1 / -1;
+  }
 }
 
 /* ---- Week ---- */

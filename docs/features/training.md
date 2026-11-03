@@ -50,7 +50,9 @@ A distância e a duração do treino são estimadas a partir das etapas (aparece
 
 ### 4. Acompanhar a semana
 
-- **Cartão do plano**: barra de progresso e os números **Plano concluído**, **Treinos feitos**, **Distância feita** (“de *X* km” planejados), **Consistência** (treinos feitos entre os que já passaram) e **Sequência** (treinos feitos seguidos). Com data de prova, mostra quantos dias faltam.
+- **Cartão do plano**: barra de progresso, os números **Plano concluído**, **Consistência** (treinos feitos entre os que já passaram) e **Sequência** (treinos feitos seguidos) e dois quadros com barra colorida e cada número por extenso (passe o mouse sobre um item para ver a explicação). Com data de prova, mostra quantos dias faltam.
+  - **Treinos** (“*X* de *Y* concluídos”): **Feitos**, **Parciais**, **Perdidos** (a data passou sem corrida), **Pulados** (só aparece se houver) e **Pendentes** (hoje ou depois, ainda não feitos).
+  - **Distância** (“*X* de *Y* km”): **Feita**, **Pendente** (distância planejada dos treinos que faltam) e **Perdida** (a dos treinos perdidos e pulados, mais o que faltou nos parciais). **Ainda possível** = feita + pendente, ou seja, até onde o plano chega se todos os treinos que faltam forem feitos como planejado, também em % do plano.
 - **Semana**: os 7 dias, de segunda a domingo, com cada treino e a sua situação. Correu em outro dia? **Arraste** a corrida (uma **Corrida extra** ou a corrida já ligada a um treino) até o treino certo, mesmo que seja de outro dia da semana: ela passa a valer para aquele treino. Soltar no dia, fora de um treino, liga a corrida ao primeiro treino daquele dia ainda sem corrida. Use **1 semana** / **2 semanas** para ver uma ou duas semanas de cada vez (a escolha fica salva neste navegador); com **2 semanas** dá para arrastar uma corrida de uma semana para a outra, como o longão de domingo feito na segunda seguinte. Use as setas **Semana anterior** / **Próxima semana** (que andam uma semana) e **Hoje** para voltar à semana atual. Etiquetas **Esta semana** e **Semana leve** aparecem quando cabem. No topo: **Planejado**, **Corrido** e **Treinos feitos**.
 - **Distância semanal: planejado x corrido**: gráfico de barras do plano inteiro. Clique numa semana para ir até ela. **Ver como tabela** mostra os números.
 - **Corridas x metas**: as últimas 12 corridas ligadas a treinos, com a meta, o que você fez e **Pace x meta** (**Na meta** quando a diferença é de até 10 s/km).
@@ -89,7 +91,7 @@ Para **um treino só**, abra o treino e use **Exportar treino**: **FIT (relógio
   - **Descanso**: treinos do tipo descanso.
   - **Pulado**: você marcou como pulado.
   - Corridas que não combinam com nenhum treino aparecem na semana como **Corrida extra**.
-- **Marcar como feito** (em **Situação**) serve para um treino feito sem corrida importada. A **distância planejada** dele conta como corrida em **Distância feita**, em **Corrido** e no gráfico (menos para fortalecimento / cross, que não é corrida).
+- **Marcar como feito** (em **Situação**) serve para um treino feito sem corrida importada. A **distância planejada** dele conta como corrida na distância **Feita**, em **Corrido** e no gráfico (menos para fortalecimento / cross, que não é corrida).
 - **Corrido** da semana soma todas as suas corridas da semana, ligadas ou não, mais os treinos marcados como feitos à mão.
 - **Plano concluído** = (feitos + parciais) ÷ todos os treinos, sem contar os de descanso.
 - **Gerador de plano:**

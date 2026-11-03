@@ -139,14 +139,82 @@ export function planCard(plans: TrainingPlan[], plan: TrainingPlan, progress: Pl
       <div class="trn-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(progress.completion * 100)}" aria-label="${t('statCompletion')}">
         <span style="width:${Math.min(100, progress.completion * 100)}%"></span>
       </div>
-      <dl class="stat-grid">
+      <dl class="stat-grid trn-kpis">
         <div class="stat main"><dt>${t('statCompletion')}</dt><dd>${pct(progress.completion)}</dd></div>
-        <div class="stat"><dt>${t('statWorkouts')}</dt><dd>${progress.done + progress.partial}<small> / ${progress.total}</small></dd></div>
-        <div class="stat"><dt>${t('statKm')}</dt><dd>${km(progress.doneTotal)}<small class="trn-of">${t('ofValue', { value: km(progress.plannedTotal) })}</small></dd></div>
         <div class="stat" title="${t('statConsistencyHint')}"><dt>${t('statConsistency')}</dt><dd>${progress.consistency === undefined ? '—' : pct(progress.consistency)}</dd></div>
         <div class="stat"><dt>${t('statStreak')}</dt><dd>${progress.streak === 1 ? t('streakOne') : t('streakValue', { n: progress.streak })}</dd></div>
       </dl>
+      <div class="trn-breakdowns">
+        ${workoutsBreakdown(progress)}
+        ${distanceBreakdown(progress)}
+      </div>
     </section>`;
+}
+
+interface Part {
+  /** Colour class suffix: trn-seg-<tone>. */
+  tone: 'done' | 'partial' | 'missed' | 'skipped' | 'pending';
+  label: string;
+  value: number;
+  text: string;
+  hint?: string;
+}
+
+/** A stacked bar (width ∝ value) plus a legend with every value spelled out. */
+function breakdown(title: string, summary: string, parts: Part[], footer = ''): string {
+  const sum = parts.reduce((s, p) => s + p.value, 0);
+  const bar = parts
+    .filter((p) => p.value > 0)
+    .map((p) => `<span class="trn-seg trn-seg-${p.tone}" style="flex-grow:${p.value}" title="${esc(`${p.label}: ${p.text}`)}"></span>`)
+    .join('');
+  const aria = parts.map((p) => `${p.label}: ${p.text}`).join(', ');
+  const items = parts
+    .map(
+      (p) => `
+        <div class="trn-legend-item"${p.hint ? ` title="${esc(p.hint)}"` : ''}>
+          <dt><span class="trn-dot trn-seg-${p.tone}" aria-hidden="true"></span>${esc(p.label)}</dt>
+          <dd>${esc(p.text)}</dd>
+        </div>`,
+    )
+    .join('');
+  return `
+    <section class="trn-breakdown">
+      <header class="trn-breakdown-head">
+        <h3>${esc(title)}</h3>
+        <span class="muted">${esc(summary)}</span>
+      </header>
+      <div class="trn-segbar" role="img" aria-label="${esc(`${title}: ${aria}`)}">${sum > 0 ? bar : ''}</div>
+      <dl class="trn-legend">${items}</dl>
+      ${footer}
+    </section>`;
+}
+
+function workoutsBreakdown(p: PlanProgress): string {
+  const n = (v: number) => formatNumber(v, 0);
+  const parts: Part[] = [
+    { tone: 'done', label: t('bdDone'), value: p.done, text: n(p.done), hint: t('bdDoneHint') },
+    { tone: 'partial', label: t('bdPartial'), value: p.partial, text: n(p.partial), hint: t('bdPartialHint') },
+    { tone: 'missed', label: t('bdMissed'), value: p.missed, text: n(p.missed), hint: t('bdMissedHint') },
+    { tone: 'pending', label: t('bdPending'), value: p.upcoming, text: n(p.upcoming), hint: t('bdPendingHint') },
+  ];
+  if (p.skipped) parts.splice(3, 0, { tone: 'skipped', label: t('bdSkipped'), value: p.skipped, text: n(p.skipped) });
+  return breakdown(t('bdWorkouts'), t('bdWorkoutsOf', { done: n(p.done + p.partial), total: n(p.total) }), parts);
+}
+
+function distanceBreakdown(p: PlanProgress): string {
+  const parts: Part[] = [
+    { tone: 'done', label: t('bdKmDone'), value: p.doneTotal, text: km(p.doneTotal), hint: t('bdKmDoneHint') },
+    { tone: 'pending', label: t('bdKmPending'), value: p.pendingTotal, text: km(p.pendingTotal), hint: t('bdKmPendingHint') },
+    { tone: 'missed', label: t('bdKmLost'), value: p.lostTotal, text: km(p.lostTotal), hint: t('bdKmLostHint') },
+  ];
+  const share = p.plannedTotal > 0 ? t('bdKmShare', { pct: `${formatNumber((p.possibleTotal / p.plannedTotal) * 100, 0)}%` }) : '';
+  const footer = `
+      <p class="trn-possible" title="${esc(t('bdKmPossibleHint'))}">
+        <span>${t('bdKmPossible')}</span>
+        <strong>${km(p.possibleTotal)}</strong>
+        ${share ? `<span class="muted">${esc(share)}</span>` : ''}
+      </p>`;
+  return breakdown(t('bdKm'), t('bdKmOf', { done: km(p.doneTotal), total: km(p.plannedTotal) }), parts, footer);
 }
 
 export interface WeekData {

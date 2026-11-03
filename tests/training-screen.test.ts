@@ -200,6 +200,29 @@ describe('computeProgress', () => {
     expect(p.doneTotal).toBe(22000);
   });
 
+  it('breaks workouts and distance down into done, partial, missed, skipped and pending', () => {
+    const plan: TrainingPlan = { id: 'p', name: 'P', goal: 'half', createdAt: 0 };
+    const ws = [
+      wo('done', '2026-10-20', 'easy', 8),
+      wo('partial', '2026-10-22', 'long', 15), // 10 km run: 5 km short
+      wo('missed', '2026-10-24', 'tempo', 7),
+      wo('skipped', '2026-10-26', 'easy', 6, { status: 'skipped' }),
+      wo('rest', '2026-10-27', 'rest'),
+      wo('today', '2026-10-31', 'easy', 5), // today, not run yet: pending
+      wo('next', '2026-11-02', 'long', 18),
+    ];
+    const acts = [run('2026-10-20', 9), run('2026-10-22', 10)];
+    const today = '2026-10-31';
+    const p = computeProgress(plan, ws, acts, matchWorkouts(ws, acts, today, TZ), today, TZ);
+    expect(p).toMatchObject({ total: 6, done: 1, partial: 1, missed: 1, skipped: 1, upcoming: 2 });
+    expect(p.done + p.partial + p.missed + p.skipped + p.upcoming).toBe(p.total);
+    expect(p.plannedTotal).toBe(59000);
+    expect(p.doneTotal).toBe(19000);
+    expect(p.pendingTotal).toBe(23000);
+    expect(p.lostTotal).toBe(7000 + 6000 + 5000);
+    expect(p.possibleTotal).toBe(42000);
+  });
+
   it('counts workouts marked done by hand (no run imported) as run distance', () => {
     const plan: TrainingPlan = { id: 'p', name: 'P', goal: '10k', createdAt: 0 };
     const ws = [

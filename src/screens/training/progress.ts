@@ -19,6 +19,8 @@ export interface PlanProgress {
   partial: number;
   missed: number;
   skipped: number;
+  /** Not done yet, today or later. */
+  upcoming: number;
   /** Share of all workouts completed (done + partial), 0–1. */
   completion: number;
   /** Share of workouts already due that were completed, 0–1; undefined if none due yet. */
@@ -28,6 +30,12 @@ export interface PlanProgress {
   plannedTotal: number;
   /** Metres run in matched workouts, plus planned metres of workouts marked done by hand without a run. */
   doneTotal: number;
+  /** Planned metres of the workouts still to do. */
+  pendingTotal: number;
+  /** Planned metres that can no longer be run: missed and skipped workouts, plus what partial runs fell short. */
+  lostTotal: number;
+  /** Metres the plan can still reach: done plus pending. */
+  possibleTotal: number;
   weeks: WeekVolume[];
   /** Days until the race (negative once it has passed). */
   daysToRace?: number;
@@ -89,20 +97,33 @@ export function computeProgress(
     weeks = [];
   }
 
+  const runDistance = (r: (typeof results)[number]) =>
+    r.activity && COMPLETED.has(r.status) ? r.activity.summary.distance : manualDoneDistance(r);
+  const doneTotal = results.reduce((s, r) => s + runDistance(r), 0);
+  let pendingTotal = 0;
+  let lostTotal = 0;
+  for (const r of results) {
+    const target = plannedDistance(r.workout) ?? 0;
+    if (r.status === 'upcoming') pendingTotal += target;
+    else if (r.status === 'missed' || r.status === 'skipped') lostTotal += target;
+    else if (r.status === 'partial') lostTotal += Math.max(0, target - runDistance(r));
+  }
+
   return {
     total: counted.length,
     done,
     partial,
     missed: count('missed'),
     skipped: count('skipped'),
+    upcoming: count('upcoming'),
     completion: counted.length ? (done + partial) / counted.length : 0,
     consistency: due.length ? dueCompleted / due.length : undefined,
     streak,
     plannedTotal: counted.reduce((s, w) => s + (plannedDistance(w) ?? 0), 0),
-    doneTotal: results.reduce(
-      (s, r) => s + (r.activity && COMPLETED.has(r.status) ? r.activity.summary.distance : manualDoneDistance(r)),
-      0,
-    ),
+    doneTotal,
+    pendingTotal,
+    lostTotal,
+    possibleTotal: doneTotal + pendingTotal,
     weeks,
     daysToRace: plan.raceDate ? diffDays(today, plan.raceDate) : undefined,
   };
