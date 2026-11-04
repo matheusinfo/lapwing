@@ -73,7 +73,7 @@ Palavras usadas:
 
 - **Carga** é o TRIMP: minutos pesados pela frequência cardíaca ([analysis.md](analysis.md)).
 - **Agudo:crônico** compara os **últimos 7 dias** com a sua **semana média das últimas 4 semanas**. 1,0 = igual ao normal.
-- **Treino forte**: FC média na zona 4 ou acima (80% da FC máxima ou mais) **ou** PSE 8 ou mais. Se a corrida não tem FC nem PSE, conta como forte quando o pace é pelo menos 8% mais rápido que o seu pace mediano (precisa de 5 corridas nos últimos 90 dias).
+- **Treino forte**: FC média na zona 4 ou acima (o início da Z4 de **Ajustes → Zonas de treino**; no padrão, 80% da FC máxima) **ou** PSE 8 ou mais. Se a corrida não tem FC nem PSE, conta como forte quando o pace é pelo menos 8% mais rápido que o seu pace mediano (precisa de 5 corridas nos últimos 90 dias).
 - Caminhadas não contam para estes alertas.
 
 | Alerta | Quando aparece | Nível |

@@ -21,7 +21,9 @@
 | Desacoplamento aeróbico | aerobic decoupling (Pa:HR) | Queda da eficiência (velocidade ÷ FC) da 1ª para a 2ª metade, em % |
 | Frequência cardíaca (FC) | heart rate (`hr`) | Batimentos por minuto |
 | FC máxima / de repouso | max HR / resting HR (`maxHr`, `restingHr`) | Perfil do atleta; padrão 190 / 60 bpm |
-| Zona de FC | HR zone (`hrZone`) | Faixas 1–5 definidas por frações da FC máxima (`hrZoneBounds`, padrão 60/70/80/90 %) |
+| Zona de FC | HR zone (`hrZone`) | Faixas 1–5: em bpm quando definidas em Ajustes (`hrZoneStarts`), senão frações da FC máxima (`hrZoneBounds`, padrão 60/70/80/90 %) |
+| Zona de pace | pace zone (`paceZoneStarts`) | Faixas 1–5 por pace (s/km); só existem quando definidas em Ajustes |
+| FC de limiar / pace de limiar | threshold HR / pace (`lthr`, `thresholdPace`) | Base das zonas geradas (zonas de Friel) |
 | Cadência | cadence (`cad`) | Passos por minuto (dois pés); arquivos trazem passadas por minuto e o parser dobra |
 | Potência | power | Watts |
 | TRIMP | TRIMP (Training Impulse) | Carga de treino de Banister: minutos ponderados pela intensidade da FC |

@@ -1,6 +1,7 @@
 import { navigate } from '../../app/router';
-import { deleteActivity, getActivity, getSettings, getTrack, saveActivity, saveSettings } from '../../data/db';
+import { deleteActivity, getActivity, getSettings, getTrack, saveActivity } from '../../data/db';
 import { hrZoneRanges, hrZoneSeconds, trimp } from '../../data/metrics';
+import { paceStarts, paceZoneSeconds } from '../../data/zones';
 import type { Activity, AthleteSettings, TrackPoint } from '../../data/types';
 import { formatDateTime, formatDistance, formatDuration, formatNumber, formatPace } from '../../format';
 import { onLangChange, t as tg } from '../../i18n';
@@ -57,6 +58,8 @@ interface Report {
   decoupling?: number;
   load?: number;
   zones?: number[];
+  /** Seconds per pace zone, when pace zones are set and the run has time. */
+  paceZones?: number[];
 }
 
 const bpm = (v: number | undefined) => (v === undefined ? '—' : `${Math.round(v)} bpm`);
@@ -86,6 +89,10 @@ function computeReport(activity: Activity, points: TrackPoint[], settings: Athle
     decoupling: has.hr ? aerobicDecoupling(streams) : undefined,
     load: has.hr ? trimp(points, settings) : undefined,
     zones: has.hr ? hrZoneSeconds(points, settings) : undefined,
+    paceZones: (() => {
+      const starts = paceStarts(settings);
+      return starts && streams.hasTime ? paceZoneSeconds(streams.dist, streams.moving, starts) : undefined;
+    })(),
   };
 }
 
@@ -210,39 +217,46 @@ export function mountReportPage(root: HTMLElement, id: string): () => void {
     return `<div class="table-wrap"><table class="table act-splits"><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
   }
 
-  function zoneLabels(settings: AthleteSettings): string[] {
-    const ranges = hrZoneRanges(settings);
-    return ranges.map((_, i) => `${tr('zoneLabel', { n: i + 1 })} ${tr(`zoneNames${i + 1}` as ActKey)}`);
-  }
+  const zoneName = (i: number) => `${tr('zoneLabel', { n: i + 1 })} ${tr(`zoneNames${i + 1}` as ActKey)}`;
 
-  function zoneRangeText(settings: AthleteSettings, i: number): string {
+  function hrRangeText(settings: AthleteSettings, i: number): string {
     const [lo, hi] = hrZoneRanges(settings)[i];
-    if (i === 0) return `< ${hi} bpm`;
-    if (i === 4) return `> ${lo} bpm`;
+    if (i === 0) return `≤ ${hi} bpm`;
+    if (i === 4) return `≥ ${lo} bpm`;
     return `${lo}–${hi} bpm`;
   }
 
-  function zonesHtml(r: Report): string {
-    const form = `
-      <form class="act-hr-form">
-        <label class="field"><span>${tr('maxHrSetting')}</span>
-          <input type="number" name="maxHr" min="100" max="230" required value="${r.settings.maxHr}" /></label>
-        <label class="field"><span>${tr('restingHrSetting')}</span>
-          <input type="number" name="restingHr" min="30" max="120" required value="${r.settings.restingHr}" /></label>
-        <button class="btn small" type="submit">${tr('saveSettings')}</button>
-      </form>
-      <p class="act-hint">${tr('settingsHint')}</p>`;
-    if (!r.zones) return `<p class="muted">${tr('noHr')}</p>${form}`;
-    const total = r.zones.reduce((a, b) => a + b, 0) || 1;
-    const labels = zoneLabels(r.settings);
-    const list = r.zones
+  function paceRangeText(settings: AthleteSettings, i: number): string {
+    const b = paceStarts(settings)!;
+    const p = (v: number) => formatDuration(v);
+    if (i === 0) return `> ${p(b[0])} /km`;
+    if (i === 4) return `< ${p(b[3])} /km`;
+    return `${p(b[i - 1])}–${p(b[i])} /km`;
+  }
+
+  function zoneList(seconds: number[], range: (i: number) => string, kind: 'hr' | 'pace'): string {
+    const total = seconds.reduce((a, b) => a + b, 0) || 1;
+    const items = seconds
       .map(
         (sec, i) => `<li><span class="act-swatch" style="background:${chartColors.zones[i]}"></span>
-          <span>${labels[i]} <span class="muted">${zoneRangeText(r.settings, i)}</span></span>
+          <span>${zoneName(i)} <span class="muted">${range(i)}</span></span>
           <span class="act-zone-val">${formatDuration(sec)} · ${Math.round((sec / total) * 100)}%</span></li>`,
       )
       .join('');
-    return `<div class="act-zones-chart"><canvas></canvas></div><ul class="act-zone-list">${list}</ul>${form}`;
+    return `<div class="act-zones-chart" data-zones="${kind}"><canvas></canvas></div><ul class="act-zone-list">${items}</ul>`;
+  }
+
+  function zonesHtml(r: Report): string {
+    const hr = r.zones
+      ? zoneList(r.zones, (i) => hrRangeText(r.settings, i), 'hr')
+      : `<p class="muted">${tr('noHr')}</p>`;
+    const pace = r.paceZones
+      ? zoneList(r.paceZones, (i) => paceRangeText(r.settings, i), 'pace')
+      : `<p class="muted">${r.activity.summary.has.time ? tr('noPaceZones') : tr('noPaceTime')}</p>`;
+    return `
+      <h3 class="act-zones-sub">${tr('hrZonesSub')}</h3>${hr}
+      <h3 class="act-zones-sub">${tr('paceZonesSub')}</h3>${pace}
+      <p class="act-hint"><a href="#/settings?section=zones">${tr('editZones')}</a></p>`;
   }
 
   function blocksHtml(r: Report): string {
@@ -401,12 +415,13 @@ export function mountReportPage(root: HTMLElement, id: string): () => void {
       $('.act-charts-card')!.hidden = true;
     }
 
-    // Heart-rate zones.
-    if (r.zones) {
+    // Heart-rate and pace zones.
+    for (const [kind, seconds] of [['hr', r.zones], ['pace', r.paceZones]] as const) {
+      if (!seconds) continue;
       const zonesChart: Chart<'bar'> = createZonesChart(
-        $<HTMLElement>('.act-zones-chart')!.querySelector('canvas')!,
-        r.zones.map((_, i) => tr('zoneLabel', { n: i + 1 })),
-        r.zones,
+        $<HTMLElement>(`.act-zones-chart[data-zones="${kind}"]`)!.querySelector('canvas')!,
+        seconds.map((_, i) => tr('zoneLabel', { n: i + 1 })),
+        seconds,
         (sec, share) => `${formatDuration(sec)} · ${Math.round(share * 100)}%`,
       );
       teardown.push(() => zonesChart.destroy());
@@ -428,24 +443,6 @@ export function mountReportPage(root: HTMLElement, id: string): () => void {
     });
     $('.act-notes textarea')!.addEventListener('change', (e) => {
       void save({ notes: (e.target as HTMLTextAreaElement).value.trim() || undefined });
-    });
-
-    $<HTMLFormElement>('.act-hr-form')!.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const form = e.target as HTMLFormElement;
-      const maxHr = Number((form.elements.namedItem('maxHr') as HTMLInputElement).value);
-      const restingHr = Number((form.elements.namedItem('restingHr') as HTMLInputElement).value);
-      if (!(restingHr >= 30 && maxHr <= 230 && restingHr < maxHr - 20)) {
-        showToast(tr('settingsInvalid'), 'warn');
-        return;
-      }
-      const settings = { ...r.settings, maxHr, restingHr };
-      void saveSettings(settings).then(() => {
-        if (disposed || !report) return;
-        report = computeReport(report.activity, report.points, settings);
-        render();
-        showToast(tr('saved'));
-      });
     });
 
     $('.act-export')!.addEventListener('click', () => downloadActivityGpx(r.points, r.activity.name));

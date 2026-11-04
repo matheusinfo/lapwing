@@ -1,16 +1,16 @@
 import type { ActivitySummary, AthleteSettings, TrackPoint } from './types';
+import { hrStarts, zoneOfHr } from './zones';
 
-/** Zone index 0–4 for a heart rate, from the athlete's zone bounds. */
+/** Zone index 0–4 for a heart rate, from the athlete's zones. */
 export function hrZone(hr: number, settings: AthleteSettings): number {
-  const frac = hr / settings.maxHr;
-  const i = settings.hrZoneBounds.findIndex((bound) => frac < bound);
-  return i === -1 ? 4 : i;
+  return zoneOfHr(hr, hrStarts(settings));
 }
 
-/** Zone limits in bpm: [[low, high] × 5]. */
+/** Zone limits in bpm, inclusive: [[low, high] × 5]; Z1 starts at 0 and Z5 ends at the max HR. */
 export function hrZoneRanges(settings: AthleteSettings): [number, number][] {
-  const b = settings.hrZoneBounds.map((f) => Math.round(f * settings.maxHr));
-  return [[0, b[0]], [b[0], b[1]], [b[1], b[2]], [b[2], b[3]], [b[3], settings.maxHr]];
+  const b = hrStarts(settings);
+  const top = Math.max(settings.maxHr, b[3]);
+  return [[0, b[0] - 1], [b[0], b[1] - 1], [b[1], b[2] - 1], [b[2], b[3] - 1], [b[3], top]];
 }
 
 /** Seconds spent in each of the 5 heart-rate zones (pauses over 30 s ignored). */

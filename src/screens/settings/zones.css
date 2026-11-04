@@ -1,0 +1,162 @@
+/* ---- Settings: training zones (prefix zn-) ---- */
+
+.zn-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.zn-card .card-title,
+.zn-intro {
+  margin: 0;
+}
+.zn-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.zn-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.zn-subtitle {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
+.zn-hint {
+  margin: 0;
+  font-size: 13px;
+}
+.zn-refs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px 12px;
+  max-width: 720px;
+}
+.zn-refs input {
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+}
+.zn-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.zn-notes {
+  margin: 0;
+  padding: 10px 12px 10px 28px;
+  font-size: 13px;
+  line-height: 1.5;
+  background: var(--surface-alt);
+  border-radius: 10px;
+}
+.zn-notes li:last-child {
+  list-style: none;
+  margin-left: -16px;
+  font-weight: 600;
+}
+
+/* Zone table: name | heart rate | pace. */
+.zn-table {
+  display: flex;
+  flex-direction: column;
+  max-width: 720px;
+}
+.zn-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 6px 16px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--line);
+}
+.zn-row:last-child {
+  border-bottom: 0;
+}
+.zn-head {
+  padding-block: 0 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.zn-name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.zn-swatch {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+/* Same colours as the zone charts (chartColors.zones in src/ui/chart-theme.ts). */
+.zn-z1 { background: #74c0fc; }
+.zn-z2 { background: #69db7c; }
+.zn-z3 { background: #ffd43b; }
+.zn-z4 { background: #ffa94d; }
+.zn-z5 { background: #ff6b6b; }
+.zn-range {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+.zn-word {
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.zn-dash {
+  color: var(--muted);
+}
+.zn-in {
+  width: 64px;
+  min-width: 0;
+  height: 32px;
+  padding: 0 6px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.zn-status {
+  margin: 0;
+  font-size: 13px;
+}
+.zn-dirty {
+  color: var(--warn-ink);
+  font-weight: 600;
+}
+.zn-error {
+  margin: 0;
+  color: var(--bad);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+@media (max-width: 560px) {
+  .zn-head {
+    display: none;
+  }
+  .zn-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .zn-name {
+    grid-column: 1 / -1;
+  }
+  .zn-range {
+    flex-wrap: wrap;
+  }
+  .zn-range::before {
+    content: attr(data-label);
+    flex-basis: 100%;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .zn-in {
+    width: 56px;
+  }
+}

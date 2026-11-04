@@ -105,6 +105,20 @@ export interface AthleteSettings {
    * above the last bound.
    */
   hrZoneBounds: [number, number, number, number];
+  /**
+   * Heart rate (bpm) where zones 2–5 start, ascending. Set when the zones were
+   * edited or calculated; wins over `hrZoneBounds`.
+   */
+  hrZoneStarts?: [number, number, number, number];
+  /**
+   * Pace (s/km) where zones 2–5 start, descending (each zone is faster than
+   * the previous one). Without it there are no pace zones.
+   */
+  paceZoneStarts?: [number, number, number, number];
+  /** Lactate threshold heart rate (bpm), the reference for calculated HR zones. */
+  lthr?: number;
+  /** Threshold pace (s/km), the reference for calculated pace zones. */
+  thresholdPace?: number;
   /** Kilograms, optional. */
   weight?: number;
 }

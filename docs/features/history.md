@@ -49,7 +49,7 @@ Os filtros ligados aparecem como etiquetas em **Filtros ativos** (por exemplo �
   - **Condicionamento (42 dias)**: sua carga de longo prazo.
   - **Fadiga (7 dias)**: a carga da última semana.
   - **Forma** = condicionamento − fadiga. Acima de 5 é **descansado**, abaixo de −10 é **cansado**, no meio é **equilibrado**.
-  - Precisa de corridas com frequência cardíaca. A FC máxima e de repouso vêm do relatório da corrida ([analysis.md](analysis.md)).
+  - Precisa de corridas com frequência cardíaca. A FC máxima e de repouso vêm de **Ajustes → Zonas de treino** ([settings/zones.md](settings/zones.md)).
 - **Recordes pessoais** (sempre de **Todo o período**): **1 km mais rápido**, **5 km mais rápido**, **10 km mais rápido**, **Meia maratona mais rápida** (o melhor trecho dentro de qualquer corrida), **Corrida mais longa**, **Maior subida** e **Melhor pace médio (5 km+)**. Na primeira vez aparece **Calculando…** enquanto o app lê os trajetos. Clique no valor para abrir a corrida.
 - **Consistência.** Um calendário com um quadradinho por dia. Quanto mais escuro, mais km: sem corrida, menos de 5, menos de 10, menos de 15, 15 km ou mais. Mostra pelo menos 12 semanas e no máximo 53. Passe o mouse num dia para ver a distância.
 - **Tabela.** Colunas **Data**, **Nome**, **Tipo**, **Distância**, **Tempo**, **Pace**, **FC média**, **Subida**, **Cadência** e **Carga**. A busca ignora maiúsculas e acentos.

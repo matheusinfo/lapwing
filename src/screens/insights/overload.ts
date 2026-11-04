@@ -25,6 +25,7 @@
 import { trimpFromSummary } from '../../data/metrics';
 import type { Activity, ActivityType, AthleteSettings } from '../../data/types';
 import { addDays, startOfDay } from '../history/aggregate';
+import { hrStarts } from '../../data/zones';
 
 /** Walks don't count as training for these alerts. */
 export const TRAINING_TYPES: ActivityType[] = ['run', 'trail-run', 'other'];
@@ -147,7 +148,7 @@ export type HardReason = 'hr' | 'rpe' | 'pace';
 /** Why a session counts as hard, or undefined when it doesn't. */
 export function hardReason(a: Activity, settings: AthleteSettings, medPace?: number): HardReason | undefined {
   const s = a.summary;
-  if (s.avgHr !== undefined && s.avgHr >= settings.hrZoneBounds[2] * settings.maxHr) return 'hr';
+  if (s.avgHr !== undefined && s.avgHr >= hrStarts(settings)[2]) return 'hr';
   if (a.rpe !== undefined && a.rpe >= HARD_RPE) return 'rpe';
   if (
     s.avgHr === undefined &&

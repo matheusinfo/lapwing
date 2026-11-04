@@ -29,7 +29,7 @@ Lapwing is a static, browser-only TypeScript/Vite application for creating GPX r
 - `screens/compare` (`/compare/:a/:b`) compares two runs side by side.
 - `screens/insights` holds weekly/monthly goals (store `goals`), race predictions from best efforts, and overload alerts.
 - `screens/gear` (shoe tracking) is disabled: it has no route or menu entry, but its code, `data/shoes.ts`, the `shoes` store and `Activity.shoeId` are kept so stored data and backups keep working. Re-enable it by adding the nav item and route in `src/app/router.ts`.
-- `screens/settings` holds the optional Strava sync (`data/strava.ts`, OAuth with the user's own Strava API app; creating one requires a paid Strava subscription) and backup/restore to a file (`data/backup.ts`).
+- `screens/settings` holds the training zones card (`zones-section.ts`; heart-rate and pace zones stored as zone starts in `AthleteSettings.hrZoneStarts`/`paceZoneStarts`, logic in `data/zones.ts`, estimates from runs in `zones-estimate.ts`; the run report only shows time in zones and links here), the optional Strava sync (`data/strava.ts`, OAuth with the user's own Strava API app; creating one requires a paid Strava subscription) and backup/restore to a file (`data/backup.ts`).
 
 The shared domain layer is deliberately separated from screens:
 

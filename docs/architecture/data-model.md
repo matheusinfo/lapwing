@@ -104,7 +104,11 @@
 |---|---|---|
 | `maxHr` | 190 | bpm |
 | `restingHr` | 60 | bpm |
-| `hrZoneBounds` | `[0.6, 0.7, 0.8, 0.9]` | limite superior das zonas 1–4 como fração de `maxHr`; zona 5 é o resto |
+| `hrZoneBounds` | `[0.6, 0.7, 0.8, 0.9]` | limite superior das zonas 1–4 como fração de `maxHr`; zona 5 é o resto. Usado só sem `hrZoneStarts` |
+| `hrZoneStarts?` | — | bpm onde começam as zonas 2–5, crescente (ex.: `[159, 167, 177, 186]`); vence `hrZoneBounds` |
+| `paceZoneStarts?` | — | s/km onde começam as zonas 2–5, decrescente (ex.: `[410, 375, 345, 315]`); sem ele não há zonas de pace |
+| `lthr?` | — | FC de limiar (bpm), base das zonas de FC geradas |
+| `thresholdPace?` | — | pace de limiar (s/km), base das zonas de pace geradas |
 | `weight?` | — | kg |
 
 ### `Shoe`

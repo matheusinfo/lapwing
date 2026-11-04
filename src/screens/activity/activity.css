@@ -439,17 +439,16 @@
   font-variant-numeric: tabular-nums;
   font-weight: 600;
 }
-.act-root .act-hr-form {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 10px;
-  margin: 14px 0 6px;
+.act-root .act-zones-sub {
+  margin: 4px 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.act-root .act-zone-list + .act-zones-sub,
+.act-root .act-zones .muted + .act-zones-sub {
+  margin-top: 18px;
   padding-top: 14px;
   border-top: 1px solid var(--line);
-}
-.act-root .act-hr-form input {
-  width: 100px;
 }
 
 .act-root .act-notes {

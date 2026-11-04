@@ -12,6 +12,7 @@ import {
   type Severity,
 } from './overload';
 import { esc, pct } from './view';
+import { hrStarts } from '../../data/zones';
 
 const SEVERITY: Record<Severity, { label: InsightsKey; badge: string }> = {
   info: { label: 'sevInfo', badge: '' },
@@ -98,7 +99,7 @@ export function renderOverload(
   }
 
   const medPace = stats.medianPace;
-  const bpm = Math.round(settings.hrZoneBounds[2] * settings.maxHr);
+  const bpm = hrStarts(settings)[2];
   const rule = medPace !== undefined ? t('hardRule', { bpm, pace: formatPace(medPace) }) : t('hardRuleNoPace', { bpm });
 
   el.innerHTML = `

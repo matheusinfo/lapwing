@@ -106,6 +106,7 @@ Stores que cada tela observa:
 | compare | `activities`, `tracks`, `settings` |
 | insights | `goals` (só metas); `activities`, `settings` (recarga total) |
 | settings/backup | qualquer store (recontagem) |
+| settings/zones | `settings` (só sem edição pendente nem cálculo em andamento) |
 | settings/strava | `settings` (fora de carregamento/conexão/sincronização) |
 
 ## Mapa de dependências
@@ -159,6 +160,7 @@ src/
 │   ├── parse-tcx.ts        TCX de atividade
 │   ├── analysis.ts         distância/tempo em movimento cumulativos, bestEffort, computeSummary
 │   ├── metrics.ts          zonas de FC, TRIMP
+│   ├── zones.ts            zonas de FC e de pace (bpm/s por km), zonas de Friel, tempo em cada zona
 │   ├── import.ts           importActivityFiles: GPX/FIT/TCX (+ .gz) e ZIP; detecção de formato e de duplicatas
 │   ├── strava-archive.ts   .zip de exportação da conta do Strava (activities.csv + activities/); carregado sob demanda
 │   ├── zip.ts              leitor de ZIP por fatias do Blob (stored/deflate, ZIP64, CRC-32)
@@ -187,7 +189,7 @@ src/
     ├── compare/            duas corridas lado a lado (cmp-)
     ├── insights/           metas, previsões, alertas de sobrecarga (ins-)
     ├── gear/               tela de tênis desativada (código mantido, fora do roteador)
-    └── settings/           aparência (ap-), Strava (strava), backup (bk-), página (set-)
+    └── settings/           aparência (ap-), zonas de treino (zn-), Strava (strava), backup (bk-), página (set-)
 ```
 
 ## Veja também

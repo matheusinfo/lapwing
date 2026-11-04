@@ -30,9 +30,10 @@ features/
 ├── history.md      — Histórico: totais, tendências, recordes, calendário e filtros
 ├── compare.md      — Comparar: duas corridas lado a lado
 ├── insights.md     — Metas: metas, previsões de prova e alertas de carga
-└── settings/       — Ajustes: aparência, Strava e backup
+└── settings/       — Ajustes: aparência, zonas de treino, Strava e backup
     ├── README.md
     ├── appearance.md
+    ├── zones.md
     ├── strava.md
     └── backup.md
 ```
@@ -55,7 +56,7 @@ features/
 - [Histórico — sua evolução ao longo do tempo](history.md)
 - [Comparar — duas corridas lado a lado](compare.md)
 - [Metas — metas, previsões e alertas](insights.md)
-- [Ajustes — aparência, Strava e backup](settings/README.md)
+- [Ajustes — aparência, zonas de treino, Strava e backup](settings/README.md)
 
 ## Coisas que valem para o app inteiro
 

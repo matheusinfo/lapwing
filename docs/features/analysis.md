@@ -87,7 +87,7 @@ O relatório tem, de cima para baixo:
 6. **Ao longo da corrida**: gráficos de pace, frequência cardíaca, elevação, cadência e potência pela distância. Passe o mouse sobre um gráfico para ver o mesmo ponto em todos e no mapa.
 7. **Blocos rápidos (intervalados)**: aparece quando o app encontra trechos claramente mais rápidos que o seu pace habitual naquela corrida (por exemplo, tiros).
 8. **Parciais por km**: uma linha por quilômetro, com pace, tempo, FC, subida/descida e cadência. Os km **Mais rápido** e **Mais lento** ganham uma etiqueta. O último trecho incompleto aparece separado.
-9. **Zonas de frequência cardíaca**: quanto tempo você passou em cada zona, com o formulário dos seus dados de FC.
+9. **Zonas de treino**: quanto tempo você passou em cada zona de **frequência cardíaca** e de **pace**. As zonas são definidas em **Ajustes** (link **Editar zonas em Ajustes**).
 10. **Como foi?**: **Esforço (PSE 1–10)** e **Anotações**.
 
 ## Detalhes
@@ -99,13 +99,7 @@ O relatório tem, de cima para baixo:
 - **Tempo em movimento** desconta as paradas. **Tempo total** vai do primeiro ao último ponto.
 - **Pace** é o tempo para percorrer 1 km, em min/km. Quanto menor, mais rápido.
 - **Cadência** é medida em passos por minuto (spm), contando os dois pés.
-- **Zonas de FC (frequência cardíaca).** São 5 zonas calculadas a partir da sua FC máxima:
-  - **Z1 Recuperação**: abaixo de 60%
-  - **Z2 Resistência**: 60–70%
-  - **Z3 Moderado**: 70–80%
-  - **Z4 Limiar**: 80–90%
-  - **Z5 Máximo**: acima de 90%
-- **Seus dados de FC.** Padrão: **Sua FC máxima** 190 bpm e **FC de repouso** 60 bpm. Ajuste e clique em **Atualizar zonas**. A FC de repouso precisa ser pelo menos 20 bpm menor que a máxima. Esses valores valem para o app inteiro (zonas, TRIMP, Histórico e alertas em Metas).
+- **Zonas de treino.** São 5 zonas de FC (**Z1 Recuperação**, **Z2 Resistência**, **Z3 Moderado**, **Z4 Limiar**, **Z5 Máximo**) e, se você definir, 5 de pace. Sem zonas próprias, as de FC são por % da FC máxima (60, 70, 80 e 90%) e não há zonas de pace. Edite, calcule pelas suas corridas ou volte ao padrão em **Ajustes → Zonas de treino** ([settings/zones.md](settings/zones.md)). A FC máxima e a de repouso (padrão 190 e 60 bpm) também ficam lá e valem para o app inteiro (zonas, TRIMP, Histórico e alertas em Metas).
 - **TRIMP** (carga de treino) são minutos “pesados” pelo esforço do coração: quanto mais alta a FC, mais cada minuto conta. Cerca de 50 é uma hora leve; 150 ou mais é um treino forte. Etiquetas: **Leve** (abaixo de 50), **Moderado** (50–99), **Forte** (100–199), **Muito forte** (200 ou mais).
 - **Desacoplamento aeróbico** compara a primeira e a segunda metade da corrida: quanto a FC subiu para o mesmo pace. **Estável** abaixo de 5%, **Alguma deriva** de 5% a 10%, **Deriva alta** a partir de 10%. Precisa de FC, horários e pelo menos 20 minutos.
 - **PSE** (percepção subjetiva de esforço) é a sua nota de 1 (muito leve) a 10 (máximo). Ela é usada nos alertas de **Metas** e aparece em **Comparar**.
@@ -117,7 +111,7 @@ O relatório tem, de cima para baixo:
 ## Dicas
 
 - Importe o histórico inteiro de uma vez com o arquivo `.zip` do Strava, sem descompactar. Os repetidos são pulados, então dá para soltar o arquivo de novo sem medo.
-- Se você sabe sua FC máxima real (de um teste ou prova), ajuste-a. Zonas e carga ficam muito mais corretas.
+- Se você sabe sua FC máxima real (de um teste ou prova), ajuste-a em **Ajustes → Zonas de treino**, ou use **Calcular pelas minhas corridas**. Zonas e carga ficam muito mais corretas.
 - Use **Anotações** para clima, local, como estavam as pernas. Você agradece daqui a alguns meses.
 
 ## Perguntas comuns
@@ -135,7 +129,7 @@ O app só importa corridas, trail runs e caminhadas com GPS. Musculação, bike,
 Não. O que já foi importado fica. Solte o arquivo de novo para continuar; as corridas que já estão no app são puladas.
 
 **Por que não aparecem zonas nem TRIMP?**
-O arquivo não tem frequência cardíaca.
+O arquivo não tem frequência cardíaca. As zonas de pace só aparecem depois de definidas em **Ajustes → Zonas de treino**.
 
 **Importei a mesma corrida do Strava e de um arquivo. Ficou duplicada?**
 Normalmente não: o app compara o número do Strava (quando há) ou o horário de início e a distância, e pula a repetida.

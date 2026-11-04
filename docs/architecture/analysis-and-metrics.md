@@ -49,13 +49,28 @@ Janela deslizante sobre a distância cumulativa: para cada início `i`, avança 
 | `detectFastBlocks` | Pace suavizado (janela 100 m, amostra a cada 25 m), percentis 2–98 %, divisão em dois grupos por Otsu (`twoGroups`); exige grupo rápido ≥ 10 % mais rápido; une blocos separados por ≤ 75 m e descarta < 200 m. Requer tempo, ≥ 1 km e ≥ 20 amostras |
 | `aerobicDecoupling` | Pa:HR em %: queda da eficiência (velocidade ÷ FC) da 1ª para a 2ª metade do tempo em movimento; exige ≥ 20 min |
 
-## Zonas de frequência cardíaca (`data/metrics.ts`)
+## Zonas de frequência cardíaca e de pace (`data/zones.ts`, `data/metrics.ts`)
 
-- `hrZone(hr, s)`: índice 0–4; primeiro limite de `hrZoneBounds` maior que `hr / maxHr`; acima de todos = zona 5 (índice 4).
-- `hrZoneRanges(s)`: limites em bpm, `[[0, b0], [b0, b1], [b1, b2], [b2, b3], [b3, maxHr]]`.
-- `hrZoneSeconds(points, s)`: segundos por zona; intervalos limitados a 30 s.
+As zonas são guardadas como o valor onde começam as zonas 2–5 (`ZoneStarts`).
 
-Com o padrão (`maxHr` 190, limites 0,6/0,7/0,8/0,9): Z1 < 114, Z2 114–133, Z3 133–152, Z4 152–171, Z5 ≥ 171 bpm.
+- `hrStarts(s)`: `hrZoneStarts` (bpm, crescente) quando válido; senão `round(hrZoneBounds[i] × maxHr)`.
+- `paceStarts(s)`: `paceZoneStarts` (s/km, decrescente) quando válido; senão `undefined` (sem zonas de pace).
+- `zoneOfHr(hr, starts)`: índice 0–4 = quantos inícios são ≤ `round(hr)`. `hrZone(hr, s)` usa `hrStarts(s)`.
+- `zoneOfPace(pace, starts)`: índice 0–4 = quantos inícios são ≥ `pace` (um pace no limite vai para a zona mais rápida).
+- `hrZoneRanges(s)`: limites inclusivos em bpm, `[[0, b0−1], [b0, b1−1], [b1, b2−1], [b2, b3−1], [b3, max(maxHr, b3)]]`.
+- `hrZoneSeconds(points, s)`: segundos por zona de FC; intervalos limitados a 30 s.
+- `paceZoneSeconds(dist, moving, starts, chunk = 100)`: tempo em movimento de cada trecho de 100 m na zona do seu pace; trechos com menos de 50 m (o fim da corrida) ficam de fora.
+- Zonas geradas (Friel): `hrZonesFromLthr(L)` = `round([0,85; 0,90; 0,95; 1,00] × L)`; `paceZonesFromThreshold(T)` = `[1,29; 1,14; 1,06; 1,00] × T`, arredondado a 5 s.
+
+Com o padrão (`maxHr` 190, limites 0,6/0,7/0,8/0,9): Z1 ≤ 113, Z2 114–132, Z3 133–151, Z4 152–170, Z5 ≥ 171 bpm.
+
+### Estimativa pelas corridas (`screens/settings/zones-estimate.ts`)
+
+Só corridas e trail runs.
+
+- **FC máxima:** lê os pontos das 5 corridas com maior `summary.maxHr` dos últimos 365 dias e pega a maior média de 10 s de tempo em movimento (`bestWindowHr`), ignorando leituras acima de 225 bpm.
+- **FC de limiar:** maior média de 30 min (`bestWindowHr`, 1800 s) entre as 12 corridas de maior FC média dos últimos 180 dias com ≥ 30 min em movimento. Abaixo de 85 % da FC máxima estimada, usa 90 % da FC máxima.
+- **Pace de limiar:** `trainingPaces(bestVdot(efforts)).threshold` com os esforços (`loadEfforts`/`collectEfforts`) das corridas dos últimos 180 dias (`predictionRuns`).
 
 ## TRIMP (carga de treino)
 
@@ -129,7 +144,7 @@ Dias locais; "últimos 7 dias" = hoje + 6 anteriores. Caminhadas não contam (`T
 | Duras seguidas (`backToBackHard`) | Sessões duras em dois dias consecutivos | `caution` |
 | Fração dura (`hardShare`) | > 40 % do tempo em movimento, com ≥ 90 min no total | `caution` |
 
-Sessão "dura" (`hardReason`): FC média ≥ início da zona 4 (`hrZoneBounds[2] × maxHr`), **ou** RPE ≥ 8, **ou** (sem FC nem RPE, ≥ 1 km) pace médio ≤ 92 % da mediana dos últimos 90 dias (corridas ≥ 3 km; precisa de ≥ 5). Os alertas saem ordenados por severidade.
+Sessão "dura" (`hardReason`): FC média ≥ início da zona 4 (`hrStarts(settings)[2]`), **ou** RPE ≥ 8, **ou** (sem FC nem RPE, ≥ 1 km) pace médio ≤ 92 % da mediana dos últimos 90 dias (corridas ≥ 3 km; precisa de ≥ 5). Os alertas saem ordenados por severidade.
 
 ## Metas (`insights/goals.ts`)
 
