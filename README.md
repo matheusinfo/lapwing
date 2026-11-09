@@ -16,6 +16,7 @@ Lapwing is made for people who run for fun, for their health or to set new recor
 
 | | Screen | What it's for |
 |---|---|---|
+| ☀️ | **Today** | The home screen: today's workout (with its steps and a file for your watch), how your training is going, your goals and your last run, at a glance. |
 | 🗺️ | **Routes** | Draw a route by clicking on the map. Lapwing follows streets and trails on its own, shows the distance and the climb, and works out how long it will take at your pace. Then just export it to your watch (GPX). |
 | 📈 | **Analysis** | Import your runs (GPX, FIT or TCX files from Strava, Garmin or any other watch) and get a full report: map, pace, heart rate, per-km splits and your best efforts. Want to bring everything at once? Drop in your whole Strava account archive, no subscription needed. |
 | 📅 | **Training** | Build a plan for your next race, or let Lapwing generate one. It automatically checks off the workouts you've already done and exports the plan to your calendar or your watch. |

@@ -1,6 +1,8 @@
 /* Training screen. Everything is scoped under .trn-root. */
 
-.trn-root {
+/* Kind and step colours; the Today screen (.tdy-root) shows workouts too. */
+.trn-root,
+.tdy-root {
   --trn-easy: #4dabf7;
   --trn-long: #7048e8;
   --trn-tempo: #f08c00;
@@ -16,7 +18,8 @@
   --trn-step-cooldown: #38d9a9;
   --trn-step-rest: #adb5bd;
 }
-:root[data-theme='dark'] .trn-root {
+:root[data-theme='dark'] .trn-root,
+:root[data-theme='dark'] .tdy-root {
   --trn-rest: #5f666e;
   --trn-step-rest: #6c757d;
 }

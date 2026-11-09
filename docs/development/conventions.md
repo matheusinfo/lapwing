@@ -82,6 +82,7 @@ Detalhes em [i18n.md](../architecture/i18n.md).
 
 | Tela | Prefixo | Escopo |
 |---|---|---|
+| today | `tdy-` | `.tdy-root` (cores de tipo e etapa vêm de `training.css`) |
 | routes | `rm-` | `.rm-root` no `root` |
 | activity | `act-` | `.act-root` |
 | training | `trn-` | `.trn-root` (tokens `--trn-*`) |

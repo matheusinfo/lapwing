@@ -37,5 +37,6 @@ The documentation is a tree under `docs/` written in Brazilian Portuguese. Every
 ## User guides
 
 - [Feature guides index](docs/features/README.md)
+- [Today: the home screen with today's workout, form and alerts, goals and the last run](docs/features/today.md)
 - [Analysis: importing files and the Strava archive](docs/features/analysis.md)
 - [Privacy](docs/privacy.md), [FAQ](docs/faq.md)

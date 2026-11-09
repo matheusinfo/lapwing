@@ -91,7 +91,7 @@ Checklist do cleanup: mapas (`map.remove()`), gráficos (`chart.destroy()`), tim
 1. Acrescente o id ao tipo `NavId`:
 
    ```ts
-   export type NavId = 'routes' | 'activity' | 'training' | 'history' | 'insights' | 'settings' | 'weather';
+   export type NavId = 'today' | 'routes' | 'activity' | 'training' | 'history' | 'insights' | 'settings' | 'weather';
    ```
 
 2. Acrescente a `NAV_ITEMS` (a ordem do array é a ordem do menu). `icon` é o conteúdo de um `<svg viewBox="0 0 24 24">` com traço, no mesmo estilo dos demais:
@@ -132,7 +132,7 @@ navWeather: 'Clima',
 }
 ```
 
-- Escolha um prefixo curto e único (existentes: `rm-`, `act-`, `trn-`, `his-`, `cmp-`, `ins-`, `gear-`, `set-`, `ap-`, `bk-`).
+- Escolha um prefixo curto e único (existentes: `tdy-`, `rm-`, `act-`, `trn-`, `his-`, `cmp-`, `ins-`, `gear-`, `set-`, `ap-`, `bk-`).
 - Use tokens (`var(--surface)`, `var(--muted)`) e os blocos globais (`.page`, `.card`, `.btn`, `.stat-grid`…).
 - Cores próprias: token local com override em `:root[data-theme='dark'] .wx-root`.
 

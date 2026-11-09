@@ -13,6 +13,7 @@ export const en = {
   appearanceTitle: 'Appearance',
   appearanceHint: 'System follows your device setting and changes with it.',
 
+  navToday: 'Today',
   navRoutes: 'Routes',
   navActivity: 'Analysis',
   navTraining: 'Training',

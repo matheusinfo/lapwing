@@ -30,6 +30,7 @@ O projeto se chamava **Route Maker** no começo. O nome mudou para **Lapwing** (
 
 | Menu | Endereço | O que faz | Guia |
 |---|---|---|---|
+| Hoje | `#/today` (tela inicial) | Treino do dia, forma e alertas, metas e a última corrida | [features/today.md](features/today.md) |
 | Rotas | `#/routes` | Desenhar percursos e exportar GPX | [features/routes.md](features/routes.md) |
 | Análise | `#/activity`, `#/activity/<id>` | Importar corridas e ver o relatório de cada uma | [features/analysis.md](features/analysis.md) |
 | Treinos | `#/training` | Planos de treino, treinos estruturados e exportação | [features/training.md](features/training.md) |

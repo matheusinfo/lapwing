@@ -16,6 +16,7 @@ O Lapwing foi feito para quem corre por prazer, por saúde ou para bater recorde
 
 | | Tela | Para que serve |
 |---|---|---|
+| ☀️ | **Hoje** | A tela inicial: o treino de hoje (com as etapas e o arquivo para o relógio), como está o seu treino, suas metas e a última corrida, num relance. |
 | 🗺️ | **Rotas** | Desenhe um percurso clicando no mapa. O Lapwing segue ruas e trilhas sozinho, mostra a distância e a subida, e calcula quanto tempo você vai levar no seu ritmo. Depois é só exportar para o relógio (GPX). |
 | 📈 | **Análise** | Importe suas corridas (arquivos GPX, FIT ou TCX do Strava, Garmin ou outro relógio) e veja um relatório completo: mapa, ritmo, batimentos, parciais por km e seus melhores tempos. Quer trazer tudo de uma vez? Solte o arquivo completo da sua conta do Strava, mesmo sem assinatura. |
 | 📅 | **Treinos** | Monte um plano para a sua próxima prova, ou peça para o Lapwing gerar um. Ele marca sozinho os treinos que você já fez e exporta o plano para o calendário ou para o relógio. |

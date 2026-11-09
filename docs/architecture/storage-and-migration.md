@@ -28,7 +28,7 @@ Todo acesso a storage é envolvido em `try/catch`: em modo privado ou com storag
 | `lapwing:view` | `src/screens/routes/map.ts` | JSON `{ center: [lng, lat], zoom }` (salvo em `moveend`) |
 | `lapwing:pace` | `src/screens/routes/stats.ts` | Texto do campo de pace (ex.: `6:00`), padrão `6:00` |
 | `lapwing:insights-window` | `src/screens/insights/index.ts` | `'all'` ou `'90d'` |
-| `lapwing:training:active-plan` | `src/screens/training/index.ts` | id do plano ativo |
+| `lapwing:training:active-plan` | `src/screens/training/active-plan.ts` | id do plano ativo (escolhido em Treinos, lido também pela tela Hoje) |
 | `lapwing:training:week-span` | `src/screens/training/index.ts` | semanas exibidas na tela de treinos (`1` ou `2`) |
 
 `restoreRoute()` só aceita `lapwing:route` se `segments.length === waypoints.length - 1` (invariante de [routing-engine.md](routing-engine.md)).

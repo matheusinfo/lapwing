@@ -2,7 +2,8 @@
 import { formatDate, formatDistance, formatNumber } from '../../format';
 import type { Activity } from '../../data/types';
 import type { GoalMetric } from './goals';
-import { t } from './i18n';
+import { t, type InsightsKey } from './i18n';
+import type { OverloadAlert, Severity } from './overload';
 
 export const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
@@ -43,3 +44,21 @@ export function shortDistance(m: number): string {
 }
 
 export const pct = (ratio: number, digits = 0) => `${formatNumber(ratio * 100, digits)}%`;
+
+export const fmtDay = (ms: number) => formatDate(ms, 'medium');
+
+/** Badge text and colour of each alert severity (also used by the Today screen). */
+export const SEVERITY: Record<Severity, { label: InsightsKey; badge: string }> = {
+  info: { label: 'sevInfo', badge: '' },
+  caution: { label: 'sevCaution', badge: 'warn' },
+  high: { label: 'sevHigh', badge: 'bad' },
+};
+
+/** Values for the {n}, {first} and {second} placeholders of an alert's texts. */
+export function alertParams(a: OverloadAlert): Record<string, string | number> {
+  return {
+    n: a.data.days ?? 0,
+    first: a.data.firstDay !== undefined ? fmtDay(a.data.firstDay) : '',
+    second: a.data.secondDay !== undefined ? fmtDay(a.data.secondDay) : '',
+  };
+}

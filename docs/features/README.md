@@ -24,6 +24,7 @@ Os nomes de botões aparecem em **negrito**, exatamente como estão no app em po
 ```
 features/
 ├── README.md       — este índice
+├── today.md        — Hoje: tela inicial com o treino do dia, forma e alertas, metas e a última corrida
 ├── routes.md       — Rotas: desenhar percursos no mapa e exportar GPX
 ├── analysis.md     — Análise: importar corridas (GPX, FIT, TCX ou o .zip do Strava) e ler o relatório de cada uma
 ├── training.md     — Treinos: planos, treinos estruturados, ligação com corridas e exportação
@@ -42,6 +43,7 @@ features/
 
 | Menu | Endereço | Página |
 |---|---|---|
+| **Hoje** (tela inicial) | `#/today` | [today.md](today.md) |
 | **Rotas** | `#/routes` | [routes.md](routes.md) |
 | **Análise** | `#/activity` e `#/activity/<id>` | [analysis.md](analysis.md) |
 | **Treinos** | `#/training` | [training.md](training.md) |
@@ -50,6 +52,7 @@ features/
 | **Metas** | `#/insights` | [insights.md](insights.md) |
 | **Ajustes** | `#/settings` | [settings/](settings/README.md) |
 
+- [Hoje — o resumo do seu dia](today.md)
 - [Rotas — criar percursos no mapa](routes.md)
 - [Análise — importar corridas e ler o relatório](analysis.md)
 - [Treinos — planos e treinos estruturados](training.md)

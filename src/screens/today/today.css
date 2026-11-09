@@ -1,0 +1,419 @@
+/* Today screen. Everything is scoped under .tdy-root. Workout kind and step
+   colours (--trn-*, .trn-kind-*, .trn-step-*, .trn-bars) come from training.css. */
+
+.tdy-root .tdy-header {
+  align-items: flex-end;
+}
+.tdy-root .tdy-heading {
+  flex: 1;
+  min-width: 0;
+}
+.tdy-root .tdy-date {
+  margin: 2px 0 0;
+  font-size: 14px;
+}
+.tdy-root .tdy-date::first-letter {
+  text-transform: uppercase;
+}
+.tdy-root .tdy-race {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
+
+.tdy-root .tdy-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 16px;
+  align-items: start;
+}
+.tdy-root .tdy-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.tdy-root .tdy-card-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-bottom: 12px;
+}
+.tdy-root .tdy-card-head .card-title {
+  flex: 1;
+  margin: 0;
+}
+.tdy-root .tdy-plan-link {
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: none;
+}
+.tdy-root .tdy-plan-link:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+.tdy-root .tdy-subtitle {
+  margin: 16px 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+.tdy-root .tdy-small {
+  margin: 4px 0 0;
+  font-size: 12px;
+}
+.tdy-root .tdy-nothing {
+  margin: 0;
+  padding: 14px 16px;
+  color: var(--muted);
+  background: var(--surface-alt);
+  border-radius: 10px;
+}
+
+/* ---- Today's workout ---- */
+
+.tdy-root .tdy-workout {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 16px;
+  background: var(--surface-alt);
+  border-left: 5px solid var(--kind);
+  border-radius: 10px;
+}
+.tdy-root .tdy-workout + .tdy-workout {
+  margin-top: 10px;
+}
+.tdy-root .tdy-wo-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tdy-root .tdy-wo-kind {
+  flex: 1;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.tdy-root .tdy-wo-title {
+  margin: 0;
+  font-size: 20px;
+}
+.tdy-root .tdy-workout p {
+  margin: 0;
+}
+.tdy-root .tdy-wo-target {
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.tdy-root .tdy-bars .trn-bars {
+  height: 28px;
+  margin-top: 4px;
+}
+.tdy-root .tdy-desc {
+  font-size: 14px;
+  line-height: 1.45;
+  white-space: pre-line;
+}
+
+.tdy-root .tdy-steps,
+.tdy-root .tdy-steps ol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.tdy-root .tdy-steps li {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+}
+.tdy-root .tdy-steps .tdy-repeat {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 6px 0 6px 10px;
+  border-left: 2px solid var(--line);
+}
+.tdy-root .tdy-step-kind {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 9.5em;
+  color: var(--muted);
+}
+.tdy-root .tdy-step-kind::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  flex: none;
+  background: var(--step);
+  border-radius: 2px;
+}
+
+.tdy-root .tdy-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+.tdy-root .tdy-welcome-actions {
+  justify-content: center;
+  margin-top: 16px;
+}
+.tdy-root a.btn {
+  text-decoration: none;
+}
+
+.tdy-root .tdy-week {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 14px 0 0;
+}
+.tdy-root .tdy-week > div {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.tdy-root .tdy-week dt,
+.tdy-root .tdy-mini-stats dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+.tdy-root .tdy-week dd,
+.tdy-root .tdy-mini-stats dd {
+  margin: 2px 0 0;
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.tdy-root .tdy-week dd .muted,
+.tdy-root .tdy-mini-stats dd small {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.tdy-root .tdy-upcoming {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tdy-root .tdy-upcoming li {
+  display: grid;
+  grid-template-columns: 9.5em minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 8px;
+  padding: 6px 10px;
+  border-left: 4px solid var(--kind);
+  border-radius: 6px;
+  background: var(--surface-alt);
+  font-size: 14px;
+}
+.tdy-root .tdy-up-day {
+  color: var(--muted);
+  font-size: 13px;
+}
+.tdy-root .tdy-up-day::first-letter {
+  text-transform: uppercase;
+}
+.tdy-root .tdy-up-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tdy-root .tdy-up-target {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tdy-root .tdy-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.tdy-root .tdy-more:hover {
+  text-decoration: underline;
+}
+.tdy-root .tdy-more svg,
+.tdy-root .btn svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---- How you are doing ---- */
+
+.tdy-root .tdy-form {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: var(--surface-alt);
+}
+.tdy-root .tdy-form-label {
+  font-size: 12px;
+  color: var(--muted);
+}
+.tdy-root .tdy-form strong {
+  font-size: 16px;
+}
+.tdy-root .tdy-form-fresh strong {
+  color: var(--good);
+}
+.tdy-root .tdy-form-tired strong {
+  color: var(--warn);
+}
+
+.tdy-root .tdy-all-good {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.tdy-root .tdy-alert {
+  padding: 10px 12px;
+  background: var(--surface-alt);
+  border-left: 4px solid var(--muted);
+  border-radius: 8px;
+}
+.tdy-root .tdy-alert.sev-caution {
+  border-left-color: var(--warn);
+}
+.tdy-root .tdy-alert.sev-high {
+  border-left-color: var(--bad);
+}
+.tdy-root .tdy-alert-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+  font-size: 14px;
+}
+.tdy-root .tdy-alert p {
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.tdy-root .tdy-mini-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 8px;
+  margin: 12px 0 0;
+}
+.tdy-root .tdy-mini-stats > div {
+  min-width: 0;
+}
+
+/* ---- Goals ---- */
+
+.tdy-root .tdy-goals {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tdy-root .tdy-goal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.tdy-root .tdy-goal-value {
+  margin: 4px 0 6px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.tdy-root .tdy-goal-value strong {
+  font-size: 16px;
+}
+.tdy-root .tdy-bar {
+  height: 8px;
+  overflow: hidden;
+  background: var(--surface-alt);
+  border-radius: 999px;
+}
+.tdy-root .tdy-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  border-radius: inherit;
+}
+.tdy-root .tdy-bar-achieved span {
+  background: var(--good);
+}
+.tdy-root .tdy-bar-behind span {
+  background: var(--warn);
+}
+
+/* ---- Last run ---- */
+
+.tdy-root .tdy-run-name {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tdy-root .tdy-run-name a {
+  color: inherit;
+  text-decoration: none;
+}
+.tdy-root .tdy-run-name a:hover {
+  color: var(--accent-strong);
+  text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+  .tdy-root .tdy-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .tdy-root .tdy-wo-title {
+    font-size: 18px;
+  }
+  .tdy-root .tdy-upcoming li {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .tdy-root .tdy-up-day {
+    grid-column: 1 / -1;
+  }
+  .tdy-root .tdy-step-kind {
+    min-width: 0;
+  }
+}

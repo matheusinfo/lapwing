@@ -1,29 +1,16 @@
 /** Training load alerts section of the Insights screen. */
 import type { Activity, AthleteSettings } from '../../data/types';
-import { formatDate, formatDistance, formatDuration, formatNumber, formatPace } from '../../format';
+import { formatDistance, formatDuration, formatNumber, formatPace } from '../../format';
 import type { Chart } from '../../ui/chart-theme';
 import { dailyLoadChart } from './charts';
 import { t, type InsightsKey } from './i18n';
-import {
-  MIN_HISTORY_DAYS,
-  overloadReport,
-  type OverloadAlert,
-  type OverloadStats,
-  type Severity,
-} from './overload';
-import { esc, pct } from './view';
+import { MIN_HISTORY_DAYS, overloadReport, type OverloadAlert, type OverloadStats } from './overload';
+import { alertParams, esc, fmtDay, pct, SEVERITY } from './view';
 import { hrStarts } from '../../data/zones';
-
-const SEVERITY: Record<Severity, { label: InsightsKey; badge: string }> = {
-  info: { label: 'sevInfo', badge: '' },
-  caution: { label: 'sevCaution', badge: 'warn' },
-  high: { label: 'sevHigh', badge: 'bad' },
-};
 
 const ratio = (v: number) => formatNumber(v, 2, 2);
 const load = (v: number) => formatNumber(v);
 const signedPct = (v: number) => `${v >= 0 ? '+' : '−'}${pct(Math.abs(v))}`;
-const fmtDay = (ms: number) => formatDate(ms, 'medium');
 
 /** The numbers listed under each alert. */
 function facts(a: OverloadAlert): [InsightsKey, string][] {
@@ -52,11 +39,7 @@ function facts(a: OverloadAlert): [InsightsKey, string][] {
 
 function alertHtml(a: OverloadAlert): string {
   const sev = SEVERITY[a.severity];
-  const params = {
-    n: a.data.days ?? 0,
-    first: a.data.firstDay !== undefined ? fmtDay(a.data.firstDay) : '',
-    second: a.data.secondDay !== undefined ? fmtDay(a.data.secondDay) : '',
-  };
+  const params = alertParams(a);
   return `
     <li class="ins-alert sev-${a.severity}" data-alert="${a.kind}">
       <div class="ins-alert-head">

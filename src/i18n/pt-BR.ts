@@ -15,6 +15,7 @@ export const ptBR: Record<MessageKey, string> = {
   appearanceTitle: 'Aparência',
   appearanceHint: 'Sistema segue a configuração do seu dispositivo e muda junto com ela.',
 
+  navToday: 'Hoje',
   navRoutes: 'Rotas',
   navActivity: 'Análise',
   navTraining: 'Treinos',

@@ -37,6 +37,7 @@ docs/
 │
 ├── features/                          — guia de cada tela (linguagem simples)
 │   ├── README.md                      — índice do ramo
+│   ├── today.md                       — Hoje: tela inicial com o treino do dia, forma e alertas, metas e última corrida
 │   ├── routes.md                      — Rotas: desenhar percursos e exportar GPX
 │   ├── analysis.md                    — Análise: importar corridas (GPX, FIT, TCX, .zip do Strava) e ler o relatório
 │   ├── training.md                    — Treinos: planos, treinos estruturados e exportação

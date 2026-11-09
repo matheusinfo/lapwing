@@ -10,6 +10,8 @@
 - No canto inferior do menu, escolha **PT** ou **EN**.
 - Logo acima fica o botão de tema. Cada clique alterna entre **Sistema**, **Claro** e **Escuro**. Você também encontra essa opção em **Ajustes → Aparência**.
 
+O app abre na tela **Hoje**, que resume o seu dia: o treino de hoje, como está o seu treino, suas metas e a última corrida. No primeiro acesso ela está vazia e mostra atalhos para começar. Depois dos passos abaixo, volte a ela ([features/today.md](../features/today.md)).
+
 ## 2. Desenhe seu primeiro percurso (3 minutos)
 
 1. Abra **Rotas**.

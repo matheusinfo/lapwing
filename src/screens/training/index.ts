@@ -8,6 +8,7 @@ import { showToast } from '../../ui/toast';
 import type { Chart } from '../../ui/chart-theme';
 import { weeklyChart } from './chart';
 import { csvTemplate, exportPlanCsv, jsonTemplate } from './csv';
+import { loadActivePlan, pickActivePlan, saveActivePlan } from './active-plan';
 import { addDays, isDateStr, localDateOf, todayDate, weekStart } from './dates';
 import { openExportDialog, openGeneratorDialog, openImportDialog, openPlanDialog, openWorkoutDialog, type DialogContext } from './dialogs';
 import { t } from './i18n';
@@ -18,7 +19,6 @@ import type { PlannedWorkout, TrainingPlan } from './types';
 import { chartCard, compareCard, emptyState, header, planCard, shortDate, WEEK_SPANS, weekCard, workoutTitle, type WeekSpan } from './view';
 import { confirmDialog } from '../../ui/confirm';
 
-const ACTIVE_PLAN_KEY = 'lapwing:training:active-plan';
 const WEEK_SPAN_KEY = 'lapwing:training:week-span';
 /** dataTransfer type of a run dragged in the week view. */
 const RUN_MIME = 'application/x-lapwing-run';
@@ -36,21 +36,6 @@ function downloadText(text: string, fileName: string, type: string): void {
 
 const slug = (s: string) =>
   s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'plan';
-
-function loadActivePlan(): string | null {
-  try {
-    return localStorage.getItem(ACTIVE_PLAN_KEY);
-  } catch {
-    return null;
-  }
-}
-function saveActivePlan(id: string): void {
-  try {
-    localStorage.setItem(ACTIVE_PLAN_KEY, id);
-  } catch {
-    // Not important.
-  }
-}
 
 function loadWeekSpan(): WeekSpan {
   try {
@@ -95,7 +80,7 @@ export const mount: ScreenMount = (root) => {
   const setWeek = (start: string | null) => {
     location.hash = start ? `#/training?week=${start}` : '#/training';
   };
-  const activePlan = () => plans.find((p) => p.id === activePlanId) ?? plans[0];
+  const activePlan = () => pickActivePlan(plans, activePlanId)!;
 
   const ctx: DialogContext = {
     dialog,

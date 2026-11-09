@@ -32,7 +32,8 @@ URLs têm a forma `#/<caminho>?<query>`. `:nome` captura um segmento (decodifica
 
 | Caminho | Item do menu (`nav`) | Módulo |
 |---|---|---|
-| `/routes` (padrão, `DEFAULT_PATH`) | `routes` | `screens/routes` |
+| `/today` (padrão, `DEFAULT_PATH`) | `today` | `screens/today` |
+| `/routes` | `routes` | `screens/routes` |
 | `/activity` | `activity` | `screens/activity` (importação + lista) |
 | `/activity/:id` | `activity` | `screens/activity` (relatório) |
 | `/training` | `training` | `screens/training` |
@@ -41,7 +42,7 @@ URLs têm a forma `#/<caminho>?<query>`. `:nome` captura um segmento (decodifica
 | `/insights` | `insights` | `screens/insights` |
 | `/settings` | `settings` | `screens/settings` |
 
-`NavId = 'routes' | 'activity' | 'training' | 'history' | 'insights' | 'settings'`. Caminhos desconhecidos (inclusive o antigo `/gear`) redirecionam para `/routes`.
+`NavId = 'today' | 'routes' | 'activity' | 'training' | 'history' | 'insights' | 'settings'`. Caminhos desconhecidos (inclusive o antigo `/gear`) e o endereço vazio vão para `/today`, que também é o destino do logotipo do menu (`index.html`).
 
 API exportada:
 

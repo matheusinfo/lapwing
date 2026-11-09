@@ -133,6 +133,7 @@ Em .tcx, pelo Garmin Connect (web). O arquivo FIT é feito um treino por vez.
 
 ## Veja também
 
+- [Hoje — o treino do dia na tela inicial](today.md)
 - [Análise — importar corridas](analysis.md) · [Histórico](history.md) · [Metas](insights.md)
 - [Formatos de arquivo: CSV/JSON de plano, ICS, TCX e FIT](../reference/file-formats.md)
 - [Modelo de dados (técnico)](../architecture/data-model.md)

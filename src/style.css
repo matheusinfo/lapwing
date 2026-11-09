@@ -306,6 +306,8 @@ a {
   .nav-items {
     flex-direction: row;
     flex: 1;
+    /* Seven tabs share the bar: every pixel goes to the labels. */
+    gap: 0;
   }
   .nav-item {
     flex: 1;
@@ -327,6 +329,7 @@ a {
   }
   .nav-lang {
     margin: 0 0 0 4px;
+    padding: 4px 2px;
   }
 }
 

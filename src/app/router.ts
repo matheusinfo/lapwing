@@ -13,9 +13,15 @@ export interface RouteDef {
  * The shoes screen (`src/screens/gear/`, nav id `gear`) is disabled: its code
  * and the `shoes` store are kept, but it has no route or menu entry.
  */
-export type NavId = 'routes' | 'activity' | 'training' | 'history' | 'insights' | 'settings';
+export type NavId = 'today' | 'routes' | 'activity' | 'training' | 'history' | 'insights' | 'settings';
 
 export const NAV_ITEMS: { id: NavId; path: string; label: MessageKey; icon: string }[] = [
+  {
+    id: 'today',
+    path: '/today',
+    label: 'navToday',
+    icon: '<path d="m3 10.5 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M10 20v-6h4v6"/>',
+  },
   {
     id: 'routes',
     path: '/routes',
@@ -55,6 +61,7 @@ export const NAV_ITEMS: { id: NavId; path: string; label: MessageKey; icon: stri
 ];
 
 export const ROUTES: RouteDef[] = [
+  { path: '/today', nav: 'today', load: () => import('../screens/today') },
   { path: '/routes', nav: 'routes', load: () => import('../screens/routes') },
   { path: '/activity', nav: 'activity', load: () => import('../screens/activity') },
   { path: '/activity/:id', nav: 'activity', load: () => import('../screens/activity') },
@@ -67,7 +74,8 @@ export const ROUTES: RouteDef[] = [
   { path: '/settings', nav: 'settings', load: () => import('../screens/settings') },
 ];
 
-export const DEFAULT_PATH = '/routes';
+/** Where the app opens, and where unknown paths go. */
+export const DEFAULT_PATH = '/today';
 
 /** Goes to an app path, e.g. `navigate('/activity/' + id)`. */
 export function navigate(path: string): void {

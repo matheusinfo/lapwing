@@ -24,7 +24,8 @@ import { t, type InsightsKey } from './i18n';
 import { esc, formatMetric } from './view';
 import { confirmDialog } from '../../ui/confirm';
 
-const STATUS: Record<GoalStatus, { label: InsightsKey; cls: string }> = {
+/** Badge text and colour of each goal status (also used by the Today screen). */
+export const STATUS: Record<GoalStatus, { label: InsightsKey; cls: string }> = {
   achieved: { label: 'statusAchieved', cls: 'good' },
   'on-track': { label: 'statusOnTrack', cls: '' },
   behind: { label: 'statusBehind', cls: 'warn' },
