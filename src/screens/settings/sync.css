@@ -1,0 +1,38 @@
+/* ---- Settings: server sync ---- */
+
+.sy-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sy-card .card-title,
+.sy-card p {
+  margin: 0;
+}
+.sy-state {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.sy-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--neutral-strong);
+  flex: none;
+}
+.sy-card[data-state='idle'] .sy-dot {
+  background: var(--good);
+}
+.sy-card[data-state='syncing'] .sy-dot {
+  background: var(--accent);
+}
+.sy-card[data-state='error'] .sy-dot,
+.sy-card[data-state='auth'] .sy-dot {
+  background: var(--bad);
+}
+.sy-actions {
+  display: flex;
+  gap: 8px;
+}

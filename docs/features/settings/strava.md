@@ -65,7 +65,7 @@ Antes de começar, confirme que sua conta do Strava tem assinatura ativa ([Requi
 - **Intervalo padrão:** **Últimos 30 dias** antes da primeira sincronização; depois, **Desde a última sincronização**.
 - **Limite de uso do Strava:** o Strava limita quantos pedidos cada app de API pode fazer a cada 15 minutos e por dia. Cada corrida importada usa pelo menos um pedido, e a lista usa um pedido a cada 100 atividades. Quando o Strava informa, o app mostra **Uso da API do Strava: *x* / *limite* em 15 min, *y* / *limite* hoje.** Importar **Tudo** de uma vez pode bater no limite: espere e sincronize de novo.
 - **Tokens** (as “senhas temporárias” do Strava) são renovados sozinhos quando expiram.
-- **Onde fica cada coisa:** Client ID, Client Secret, tokens, nome do atleta e data da última sincronização ficam **só neste navegador, neste dispositivo**. Não existe servidor do Lapwing: o navegador fala direto com o Strava.
+- **Onde fica cada coisa:** Client ID, Client Secret, tokens, nome do atleta e data da última sincronização ficam **só neste navegador, neste dispositivo**, e nunca entram na [sincronização](sync.md): o navegador fala direto com o Strava.
 - **Backup:** por padrão, o backup **não** leva o Client Secret nem os tokens. Ao restaurar um backup assim em outro aparelho, digite o Client Secret de novo e conecte ([backup.md](backup.md)).
 - **Outro aparelho ou outro endereço:** cada navegador conecta separadamente. Se você abrir o app em outro domínio, acrescente esse domínio no app de API do Strava (o campo aceita um domínio; troque quando precisar).
 

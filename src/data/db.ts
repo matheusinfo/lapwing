@@ -142,6 +142,26 @@ function notify(store: StoreName): void {
   channel?.postMessage(store);
 }
 
+// ---- Local write tracking (used by the optional server sync, data/sync.ts) ----
+
+/** Called after every committed local write with the keys it touched (put or deleted). */
+export type WriteHook = (store: StoreName, ids: IDBValidKey[]) => void;
+let writeHook: WriteHook | null = null;
+
+/** Installs (or, with null, removes) the hook that learns about local writes. */
+export function setWriteHook(fn: WriteHook | null): void {
+  writeHook = fn;
+}
+
+function tracked(store: StoreName, ids: IDBValidKey[]): void {
+  if (!writeHook || !ids.length) return;
+  try {
+    writeHook(store, ids);
+  } catch (err) {
+    console.warn('Write hook failed:', err);
+  }
+}
+
 /** Runs `fn` whenever data in a store changes. Returns a function that stops it. */
 export function onDataChange(fn: (store: StoreName) => void): () => void {
   listeners.add(fn);
@@ -160,6 +180,7 @@ export function get<T>(store: StoreName, id: string): Promise<T | undefined> {
 
 export async function put<T extends { id: string }>(store: StoreName, value: T): Promise<void> {
   await tx([store], 'readwrite', (t) => promisify(t.objectStore(store).put(value)));
+  tracked(store, [value.id]);
   notify(store);
 }
 
@@ -168,11 +189,13 @@ export async function putMany<T extends { id: string }>(store: StoreName, values
     const s = t.objectStore(store);
     values.forEach((v) => s.put(v));
   });
+  tracked(store, values.map((v) => v.id));
   notify(store);
 }
 
 export async function remove(store: StoreName, id: string): Promise<void> {
   await tx([store], 'readwrite', (t) => promisify(t.objectStore(store).delete(id)));
+  tracked(store, [id]);
   notify(store);
 }
 
@@ -195,6 +218,8 @@ export async function saveActivity(activity: Activity, points?: TrackPoint[]): P
     t.objectStore('activities').put(activity);
     if (points) t.objectStore('tracks').put({ id: activity.id, points });
   });
+  tracked('activities', [activity.id]);
+  if (points) tracked('tracks', [activity.id]);
   notify('activities');
 }
 
@@ -203,6 +228,8 @@ export async function deleteActivity(id: string): Promise<void> {
     t.objectStore('activities').delete(id);
     t.objectStore('tracks').delete(id);
   });
+  tracked('activities', [id]);
+  tracked('tracks', [id]);
   notify('activities');
 }
 
@@ -260,13 +287,23 @@ export async function bulkWrite(writes: StoreWrite[], opts: { replace?: boolean 
   const stores = [...new Set(writes.map((w) => w.store))];
   if (!stores.length) return;
   const db = await open();
+  // With replace, the keys that existed before the clear count as deleted.
+  const cleared = new Map<StoreName, IDBValidKey[]>();
   await new Promise<void>((resolve, reject) => {
     const t = db.transaction(stores, 'readwrite');
     t.oncomplete = () => resolve();
     t.onerror = () => reject(t.error);
     t.onabort = () => reject(t.error ?? new DOMException('Transaction aborted', 'AbortError'));
     try {
-      if (opts.replace) stores.forEach((s) => t.objectStore(s).clear());
+      if (opts.replace) {
+        for (const s of stores) {
+          if (writeHook) {
+            const keys = t.objectStore(s).getAllKeys();
+            keys.onsuccess = () => cleared.set(s, keys.result);
+          }
+          t.objectStore(s).clear();
+        }
+      }
       for (const w of writes) {
         const s = t.objectStore(w.store);
         w.records.forEach((r) => s.put(r));
@@ -276,9 +313,54 @@ export async function bulkWrite(writes: StoreWrite[], opts: { replace?: boolean 
       t.abort();
     }
   });
+  for (const s of stores) {
+    const ids = [...(cleared.get(s) ?? []), ...writes.filter((w) => w.store === s).flatMap((w) => w.records.map((r) => r.id))];
+    tracked(s, ids);
+  }
   stores.forEach(notify);
 }
 
 /** Deletes every record in the given stores (one transaction). */
 export const clearStores = (stores: StoreName[]) =>
   bulkWrite(stores.map((store) => ({ store, records: [] })), { replace: true });
+
+// ---- Server sync support (data/sync.ts) ----
+
+/** Every key of a store, without loading the records. */
+export function listKeys(store: StoreName): Promise<IDBValidKey[]> {
+  return tx([store], 'readonly', (t) => promisify(t.objectStore(store).getAllKeys()));
+}
+
+/** Records for the given keys of one store (undefined where the record doesn't exist). */
+export function getMany<T>(store: StoreName, ids: IDBValidKey[]): Promise<(T | undefined)[]> {
+  return tx([store], 'readonly', (t) => {
+    const s = t.objectStore(store);
+    return Promise.all(ids.map((id) => promisify(s.get(id) as IDBRequest<T | undefined>)));
+  });
+}
+
+/** A change that came from the sync server: a record to save, or a key to delete. */
+export interface RemoteChange {
+  store: StoreName;
+  id: IDBValidKey;
+  deleted: boolean;
+  data?: { id: IDBValidKey };
+}
+
+/**
+ * Applies changes from the sync server in one transaction. Unlike the other
+ * writes, these don't reach the write hook (they must not be sent back), but
+ * screens are notified as usual.
+ */
+export async function applyRemoteChanges(changes: RemoteChange[]): Promise<void> {
+  const stores = [...new Set(changes.map((c) => c.store))];
+  if (!stores.length) return;
+  await tx(stores, 'readwrite', (t) => {
+    for (const c of changes) {
+      const s = t.objectStore(c.store);
+      if (c.deleted) s.delete(c.id);
+      else if (c.data) s.put(c.data);
+    }
+  });
+  stores.forEach(notify);
+}

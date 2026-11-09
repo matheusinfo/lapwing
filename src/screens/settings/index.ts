@@ -4,6 +4,7 @@ import { onLangChange, t, translateDom } from '../../i18n';
 import { mountAppearanceSection } from './appearance-section';
 import { mountBackupSection } from './backup-section';
 import { mountStravaSection } from './strava-section';
+import { mountSyncSection } from './sync-section';
 import { mountZonesSection } from './zones-section';
 
 /**
@@ -16,6 +17,7 @@ export const mount: ScreenMount = (root) => {
       <header class="page-header"><h1 data-i18n="navSettings"></h1></header>
       <div class="set-appearance"></div>
       <div class="set-zones"></div>
+      <div class="set-sync" hidden></div>
       <div class="set-strava"></div>
       <div class="set-backup"></div>
     </div>`;
@@ -24,6 +26,7 @@ export const mount: ScreenMount = (root) => {
     onLangChange(() => translateDom(root.querySelector('.page-header')!, t)),
     mountAppearanceSection(root.querySelector<HTMLElement>('.set-appearance')!),
     mountZonesSection(root.querySelector<HTMLElement>('.set-zones')!),
+    mountSyncSection(root.querySelector<HTMLElement>('.set-sync')!),
     mountStravaSection(root.querySelector<HTMLElement>('.set-strava')!),
     mountBackupSection(root.querySelector<HTMLElement>('.set-backup')!),
   ];

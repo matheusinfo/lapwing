@@ -9,6 +9,8 @@
 
 O Lapwing **não tem servidor, não tem conta e não coleta nada**. Suas corridas, planos e metas ficam guardados **só no navegador** do aparelho que você está usando.
 
+A exceção é opcional e fica a critério de quem publica o app: se o site também rodar o **servidor de sincronização** do Lapwing, seus dados (menos o login do Strava) ganham uma cópia nesse servidor, para aparecer em todos os seus aparelhos. O cartão **Sincronização** em **Ajustes** só aparece nesse caso. Ver [Sincronização](features/settings/sync.md).
+
 ## O que fica guardado no seu aparelho
 
 | Onde | O que | Exemplos |
@@ -26,6 +28,7 @@ Não usamos cookies, ferramentas de estatística nem anúncios.
 | **[OpenFreeMap](https://openfreemap.org/)** | Sempre que um mapa aparece | Pedidos das "peças" do mapa da região que você está vendo. Como em qualquer site de mapas, isso revela a área visualizada. |
 | **[BRouter](https://brouter.de/)** | Quando você adiciona ou move pontos em **Rotas** | As coordenadas de início e fim de cada trecho, para calcular o caminho. |
 | **[Strava](https://www.strava.com/)** | Só se você conectar em **Ajustes** | O login autorizado por você e os pedidos para baixar suas atividades. |
+| **Servidor de sincronização do próprio site** (`/api/sync/`) | Só se o site tiver um (cartão **Sincronização** em **Ajustes**) | Suas corridas, trajetos, planos, treinos, metas e configurações do atleta. O login do Strava não vai. |
 
 Arquivos de corrida que você importa (GPX, FIT, TCX) são lidos **dentro do navegador** e não são enviados a ninguém.
 

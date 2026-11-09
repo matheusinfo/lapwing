@@ -105,3 +105,6 @@ const stravaReturn = new URLSearchParams(location.search).has('state')
   ? import('./data/strava').then((m) => m.captureStravaRedirect(), () => false)
   : Promise.resolve(false);
 void stravaReturn.then(() => show());
+
+// Sync with this site's Lapwing server, if it has one (otherwise data stays only in this browser).
+void import('./data/sync').then((m) => m.startSync()).catch((err) => console.warn('Sync unavailable:', err));

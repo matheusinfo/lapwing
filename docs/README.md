@@ -48,6 +48,7 @@ docs/
 │       ├── README.md                  — índice do ramo
 │       ├── appearance.md              — tema claro, escuro ou do sistema
 │       ├── zones.md                   — zonas de FC e de pace
+│       ├── sync.md                    — sincronização entre aparelhos (servidor opcional)
 │       ├── strava.md                  — conectar e sincronizar com o Strava
 │       └── backup.md                  — baixar e restaurar backups
 │

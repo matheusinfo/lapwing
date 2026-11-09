@@ -40,7 +40,7 @@ The shared domain layer is deliberately separated from screens:
 - The app was called Route Maker before. `src/app/legacy-storage.ts` moves old `route-maker:` storage keys to `lapwing:`, and `data/db.ts` copies the old `route-maker` IndexedDB database into `lapwing` once. Keep new keys under the `lapwing:` prefix.
 - `src/i18n/` provides global translations; each feature screen keeps its own typed English and Brazilian Portuguese dictionaries beside the screen code.
 
-All user data remains in IndexedDB/localStorage. `onDataChange` in `src/data/db.ts` is the cross-screen and cross-tab notification mechanism; reload derived screen data when its relevant stores change.
+All user data remains in IndexedDB/localStorage, except with the optional sync server: `sync/server.py` (Python stdlib + SQLite, tests in `sync/test_server.py`) served under `/api/sync/`. `src/data/sync.ts` probes it at startup (`startSync()` in `main.ts`) and stays off on static hosts. `data/db.ts` reports every committed local write through `setWriteHook`, so new write paths must go through `db.ts` (or call the hook) to be synced; `applyRemoteChanges` writes server changes without reporting them back. The Strava login record (`settings/strava`) never syncs. Sync state uses the `lapwing-sync:` localStorage prefix, deliberately outside backups. See `docs/features/settings/sync.md`. `onDataChange` in `src/data/db.ts` is the cross-screen and cross-tab notification mechanism; reload derived screen data when its relevant stores change.
 
 ## Repository Conventions
 
