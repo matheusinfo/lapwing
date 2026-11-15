@@ -37,6 +37,8 @@ const en = {
   retry: 'Try again',
 
   err_auth: 'The API key was refused. Check ANTHROPIC_API_KEY in the server’s .env.',
+  err_workspace:
+    'This API key isn’t tied to a workspace. Put the workspace ID (wrkspc_…) in ANTHROPIC_WORKSPACE_ID in the server’s .env and restart it.',
   err_rate_limit: 'The API is rate limiting requests. Wait a little and try again.',
   err_busy: 'Too many questions in a short time. Wait a minute and try again.',
   err_overloaded: 'Claude is overloaded right now. Try again in a moment.',
@@ -91,6 +93,8 @@ const ptBR: Record<Key, string> = {
   retry: 'Tentar de novo',
 
   err_auth: 'A chave de API foi recusada. Confira ANTHROPIC_API_KEY no .env do servidor.',
+  err_workspace:
+    'Esta chave de API não está presa a um workspace. Coloque o ID do workspace (wrkspc_…) em ANTHROPIC_WORKSPACE_ID no .env do servidor e reinicie-o.',
   err_rate_limit: 'A API está limitando as requisições. Espere um pouco e tente de novo.',
   err_busy: 'Muitas perguntas em pouco tempo. Espere um minuto e tente de novo.',
   err_overloaded: 'O Claude está sobrecarregado agora. Tente de novo em instantes.',

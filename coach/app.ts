@@ -144,7 +144,11 @@ export function errorCode(err: unknown): { code: string; message: string } {
   if (err instanceof Anthropic.RateLimitError) return { code: 'rate_limit', message };
   if (err instanceof Anthropic.APIConnectionError) return { code: 'network', message };
   if (err instanceof Anthropic.InternalServerError) return { code: 'overloaded', message };
-  if (err instanceof Anthropic.BadRequestError) return { code: 'bad_request', message };
+  if (err instanceof Anthropic.BadRequestError) {
+    // A user key without ANTHROPIC_WORKSPACE_ID.
+    if (message.includes('anthropic-workspace-id')) return { code: 'workspace', message };
+    return { code: 'bad_request', message };
+  }
   return { code: 'api', message };
 }
 

@@ -73,7 +73,7 @@ async function buildContext(signal: AbortSignal): Promise<string> {
 function errorText(err: unknown): string {
   if (err instanceof CoachError) {
     const key = `err_${err.code}` as CoachKey;
-    const known = ['auth', 'rate_limit', 'busy', 'overloaded', 'network', 'not_configured', 'too_large', 'bad_request'];
+    const known = ['auth', 'workspace', 'rate_limit', 'busy', 'overloaded', 'network', 'not_configured', 'too_large', 'bad_request'];
     return known.includes(err.code) ? t(key, { message: err.message }) : t('err_generic', { message: err.message });
   }
   return t('err_generic', { message: err instanceof Error ? err.message : String(err) });

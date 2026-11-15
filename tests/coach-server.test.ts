@@ -128,6 +128,9 @@ describe('errorCode', () => {
     expect(errorCode(new Anthropic.InternalServerError(529, undefined, 'overloaded', headers)).code).toBe('overloaded');
     expect(errorCode(new Anthropic.APIConnectionError({ message: 'offline' })).code).toBe('network');
     expect(errorCode(new Error('boom'))).toEqual({ code: 'api', message: 'boom' });
+    const noWorkspace = new Anthropic.BadRequestError(400, undefined, 'must include the anthropic-workspace-id header', headers);
+    expect(errorCode(noWorkspace).code).toBe('workspace');
+    expect(errorCode(new Anthropic.BadRequestError(400, undefined, 'bad tool', headers)).code).toBe('bad_request');
   });
 });
 

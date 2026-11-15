@@ -9,6 +9,7 @@
  * Environment:
  *   ANTHROPIC_API_KEY  required for the coach to answer (without it /status says configured: false)
  *   ANTHROPIC_AUTH_TOKEN  alternative to the key, sent as a Bearer token
+ *   ANTHROPIC_WORKSPACE_ID  workspace (wrkspc_…) for keys not scoped to one, e.g. user keys (sk-ant-usr-…)
  *   COACH_PORT         default 8001          COACH_HOST   default 127.0.0.1 (0.0.0.0 in Docker)
  *   COACH_MODEL        default claude-opus-5-5
  *   COACH_EFFORT       low | medium | high | xhigh | max (default medium)
@@ -32,8 +33,17 @@ function intEnv(name: string, fallback: number): number {
 
 const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
 const authToken = process.env.ANTHROPIC_AUTH_TOKEN?.trim();
+const workspaceId = process.env.ANTHROPIC_WORKSPACE_ID?.trim();
 const effortEnv = process.env.COACH_EFFORT as Effort | undefined;
-const client = apiKey || authToken ? new Anthropic({ apiKey: apiKey || null, authToken: authToken || null }) : undefined;
+const client =
+  apiKey || authToken
+    ? new Anthropic({
+        apiKey: apiKey || null,
+        authToken: authToken || null,
+        // User keys aren't tied to a workspace: every request must name one.
+        defaultHeaders: workspaceId ? { 'anthropic-workspace-id': workspaceId } : undefined,
+      })
+    : undefined;
 
 const config: CoachConfig = {
   ...DEFAULT_CONFIG,

@@ -86,6 +86,7 @@ location /api/coach/ {
 |---|---|---|
 | `ANTHROPIC_API_KEY` | — | Chave da API. Sem ela, a tela mostra que o treinador não está configurado |
 | `ANTHROPIC_AUTH_TOKEN` | — | Alternativa à chave, enviada como `Authorization: Bearer` |
+| `ANTHROPIC_WORKSPACE_ID` | — | ID do workspace (`wrkspc_…`). Obrigatório para chaves que não pertencem a um workspace, como as chaves de usuário (`sk-ant-usr-…`); sem ele a API responde “not scoped to a workspace” |
 | `COACH_MODEL` | `claude-opus-5-5` | Modelo |
 | `COACH_EFFORT` | `medium` | Esforço do raciocínio: `low`, `medium`, `high`, `xhigh` ou `max` |
 | `COACH_MAX_TOKENS` | `64000` | Tamanho máximo de cada resposta |
@@ -108,6 +109,8 @@ O navegador guarda a conversa e roda as consultas (`src/screens/coach/tools.ts`)
 **A tela diz que o treinador não está configurado.** O site não tem o servidor do treinador, ou ele está sem `ANTHROPIC_API_KEY`. Veja [Para quem publica o app](#para-quem-publica-o-app).
 
 **“A chave de API foi recusada.”** Confira a chave no `.env` do servidor e reinicie-o.
+
+**“Esta chave de API não está presa a um workspace.”** Chaves de usuário (`sk-ant-usr-…`) agem em nome da pessoa e não de um workspace, então cada pedido precisa dizer qual workspace usar. Copie o ID (`wrkspc_…`) na página **Workspaces** do Console e coloque em `ANTHROPIC_WORKSPACE_ID` no `.env`. Outra saída é criar uma chave dentro de um workspace.
 
 **Importei uma corrida no meio da conversa e ele não viu no resumo.** O resumo é do começo da conversa, mas o treinador consulta os dados atuais quando precisa. Peça para ele olhar a corrida, ou comece uma **Nova conversa**.
 
