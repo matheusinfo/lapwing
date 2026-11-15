@@ -22,6 +22,7 @@ Lapwing is made for people who run for fun, for their health or to set new recor
 | 📅 | **Training** | Build a plan for your next race, or let Lapwing generate one. It automatically checks off the workouts you've already done and exports the plan to your calendar or your watch. |
 | 📊 | **History** | See how much you ran each week, how your pace is evolving, your records and a calendar with all your running days. You can filter by distance, pace, climb and more. |
 | ⚖️ | **Compare** | Put two runs side by side and find out where you were faster. |
+| 💬 | **Coach** | Chat with a coach (Claude) that knows your runs, your plan and your zones: ask questions, review workouts and simulate races. Optional: needs the coach server with an Anthropic API key. |
 | 🎯 | **Insights** | Set weekly or monthly goals, get an estimate of your 5K, 10K, half marathon and marathon times, and get a warning when you're training too much. |
 | ⚙️ | **Settings** | Choose a light or dark theme, connect Strava (if you want; requires a Strava subscription) and back up your data. |
 
@@ -34,7 +35,7 @@ The app works in **Portuguese** and **English**, on desktop and on mobile.
 ## Your data is yours 🔒
 
 - Everything you import or create is **stored only in your browser**, on this device.
-- Lapwing **has no server** and doesn't send your runs anywhere.
+- Lapwing **has no server** and doesn't send your runs anywhere. One optional exception: in **Coach**, each question sends a summary of your training to Claude (Anthropic) through the site's coach server.
 - The internet is used for just three things: loading the **map** (OpenFreeMap), **calculating paths** in the route editor (BRouter) and, if you want, **fetching runs from Strava** (available to Strava subscribers).
 - So you don't lose anything, use **Settings → Backup & restore** every now and then. It's also how you move your data to another computer.
 

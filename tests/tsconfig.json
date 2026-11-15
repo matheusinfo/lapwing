@@ -8,6 +8,7 @@
   },
   "include": [
     "../src",
+    "../coach",
     "./",
     "../vite.config.ts"
   ]

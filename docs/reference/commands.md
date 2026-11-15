@@ -15,6 +15,8 @@
 | `npm test` | `vitest run` | Suíte completa uma vez |
 | `npm run typecheck` | `tsc --noEmit && tsc --noEmit -p tests` | Só TypeScript |
 | `npm run fixtures` | `node scripts/make-fixtures.mjs` | Regenera `tests/fixtures/runs/` (apaga os arquivos existentes) |
+| `npm run build:coach` | `node scripts/build-coach.mjs` | Gera o servidor do treinador num arquivo só, `coach/dist/server.mjs` |
+| `npm run coach` | `build:coach` + `node --env-file-if-exists=.env coach/dist/server.mjs` | Sobe o servidor do treinador em `127.0.0.1:8001`, lendo a chave do `.env` ([coach.md](../features/coach.md)) |
 
 Variações úteis:
 

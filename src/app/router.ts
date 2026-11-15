@@ -13,7 +13,7 @@ export interface RouteDef {
  * The shoes screen (`src/screens/gear/`, nav id `gear`) is disabled: its code
  * and the `shoes` store are kept, but it has no route or menu entry.
  */
-export type NavId = 'today' | 'routes' | 'activity' | 'training' | 'history' | 'insights' | 'settings';
+export type NavId = 'today' | 'routes' | 'activity' | 'training' | 'history' | 'insights' | 'coach' | 'settings';
 
 export const NAV_ITEMS: { id: NavId; path: string; label: MessageKey; icon: string }[] = [
   {
@@ -53,6 +53,12 @@ export const NAV_ITEMS: { id: NavId; path: string; label: MessageKey; icon: stri
     icon: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
   },
   {
+    id: 'coach',
+    path: '/coach',
+    label: 'navCoach',
+    icon: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/>',
+  },
+  {
     id: 'settings',
     path: '/settings',
     label: 'navSettings',
@@ -71,6 +77,7 @@ export const ROUTES: RouteDef[] = [
   { path: '/compare/:a', nav: 'history', load: () => import('../screens/compare') },
   { path: '/compare/:a/:b', nav: 'history', load: () => import('../screens/compare') },
   { path: '/insights', nav: 'insights', load: () => import('../screens/insights') },
+  { path: '/coach', nav: 'coach', load: () => import('../screens/coach') },
   { path: '/settings', nav: 'settings', load: () => import('../screens/settings') },
 ];
 

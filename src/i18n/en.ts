@@ -19,6 +19,7 @@ export const en = {
   navTraining: 'Training',
   navHistory: 'History',
   navInsights: 'Insights',
+  navCoach: 'Coach',
   navGear: 'Gear',
   navSettings: 'Settings',
   loadingScreen: 'Loading…',

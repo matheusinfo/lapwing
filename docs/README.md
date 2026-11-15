@@ -44,6 +44,7 @@ docs/
 │   ├── history.md                     — Histórico: tendências, recordes e filtros
 │   ├── compare.md                     — Comparar: duas corridas lado a lado
 │   ├── insights.md                    — Metas: metas, previsões de prova e alertas de carga
+│   ├── coach.md                       — Treinador: chat com o Claude sobre seus treinos (servidor coach/ com chave de API)
 │   └── settings/                      — Ajustes
 │       ├── README.md                  — índice do ramo
 │       ├── appearance.md              — tema claro, escuro ou do sistema

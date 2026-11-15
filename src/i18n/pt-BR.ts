@@ -21,6 +21,7 @@ export const ptBR: Record<MessageKey, string> = {
   navTraining: 'Treinos',
   navHistory: 'Histórico',
   navInsights: 'Metas',
+  navCoach: 'Treinador',
   navGear: 'Tênis',
   navSettings: 'Ajustes',
   loadingScreen: 'Carregando…',

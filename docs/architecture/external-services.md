@@ -12,8 +12,9 @@
 | OpenFreeMap | Estilo, tiles, fontes e sprites do mapa | Sempre que um mapa é exibido | Não |
 | BRouter (`brouter.de`) | Caminho a pé entre dois pontos | A cada segmento novo/alterado no editor de rotas | Não |
 | Strava API | OAuth e importação de corridas | Só se o usuário configurar e clicar em conectar/sincronizar | App de API do próprio usuário (exige assinatura do Strava) |
+| Claude API (Anthropic), via servidor do treinador (`/api/coach/`, `coach/`) | Chat do Treinador | Só ao enviar uma pergunta na tela Treinador, e só se o site tiver o servidor | `ANTHROPIC_API_KEY` no servidor (nunca no navegador) |
 
-Não há backend próprio, analytics, telemetria nem fontes web externas. Fora esses três, o app só faz requisições ao próprio host (arquivos estáticos).
+Não há analytics, telemetria nem fontes web externas. Fora esses serviços, o app só faz requisições ao próprio host: arquivos estáticos e, quando o site os tiver, o servidor de sincronização (`/api/sync/`) e o servidor do treinador (`/api/coach/`, que fala com a Claude API). Detalhes do treinador em [features/coach.md](../features/coach.md).
 
 ## OpenFreeMap
 

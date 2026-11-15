@@ -31,6 +31,7 @@ features/
 ├── history.md      — Histórico: totais, tendências, recordes, calendário e filtros
 ├── compare.md      — Comparar: duas corridas lado a lado
 ├── insights.md     — Metas: metas, previsões de prova e alertas de carga
+├── coach.md        — Treinador: chat com o Claude sobre seus treinos, dúvidas e simulação de prova
 └── settings/       — Ajustes: aparência, zonas de treino, Strava e backup
     ├── README.md
     ├── appearance.md
@@ -50,6 +51,7 @@ features/
 | **Histórico** | `#/history` | [history.md](history.md) |
 | (a partir de Histórico ou Análise) | `#/compare/<a>/<b>` | [compare.md](compare.md) |
 | **Metas** | `#/insights` | [insights.md](insights.md) |
+| **Treinador** | `#/coach` | [coach.md](coach.md) |
 | **Ajustes** | `#/settings` | [settings/](settings/README.md) |
 
 - [Hoje — o resumo do seu dia](today.md)
@@ -59,11 +61,12 @@ features/
 - [Histórico — sua evolução ao longo do tempo](history.md)
 - [Comparar — duas corridas lado a lado](compare.md)
 - [Metas — metas, previsões e alertas](insights.md)
+- [Treinador — converse sobre seus treinos](coach.md)
 - [Ajustes — aparência, zonas de treino, Strava e backup](settings/README.md)
 
 ## Coisas que valem para o app inteiro
 
-- **Tudo fica no seu navegador.** Não existe conta nem servidor do Lapwing. Corridas, planos e metas ficam guardados só neste navegador, neste aparelho. Faça backups de vez em quando ([backup.md](settings/backup.md)).
+- **Tudo fica no seu navegador.** Não existe conta nem servidor do Lapwing. Corridas, planos e metas ficam guardados só neste navegador, neste aparelho. Faça backups de vez em quando ([backup.md](settings/backup.md)). As exceções são opcionais e dependem do site: a [sincronização](settings/sync.md) e o [Treinador](coach.md), que envia um resumo dos seus treinos ao Claude quando você faz uma pergunta.
 - **Idioma.** O seletor **EN / PT** fica no menu. O app abre em português quando o navegador está em português.
 - **Tema.** O botão de tema no menu alterna entre **Sistema**, **Claro** e **Escuro** ([appearance.md](settings/appearance.md)).
 - **Confirmações.** Ações que apagam ou substituem dados abrem uma janela de confirmação com **Cancelar** e um botão vermelho (por exemplo **Excluir**). A tecla Esc ou um clique fora da janela cancela.

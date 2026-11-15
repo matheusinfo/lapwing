@@ -12,13 +12,16 @@
     "preview": "vite preview",
     "test": "vitest run",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tests",
-    "fixtures": "node scripts/make-fixtures.mjs"
+    "fixtures": "node scripts/make-fixtures.mjs",
+    "build:coach": "node scripts/build-coach.mjs",
+    "coach": "node scripts/build-coach.mjs && node --env-file-if-exists=.env coach/dist/server.mjs"
   },
   "dependencies": {
     "chart.js": "^4.6.1",
     "maplibre-gl": "^6.16.0"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^1.8.0",
     "@types/node": "^24.19.2",
     "jsdom": "^30.1.3",
     "typescript": "~5.9",

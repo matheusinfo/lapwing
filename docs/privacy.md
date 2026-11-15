@@ -11,12 +11,14 @@ O Lapwing **não tem servidor, não tem conta e não coleta nada**. Suas corrida
 
 A exceção é opcional e fica a critério de quem publica o app: se o site também rodar o **servidor de sincronização** do Lapwing, seus dados (menos o login do Strava) ganham uma cópia nesse servidor, para aparecer em todos os seus aparelhos. O cartão **Sincronização** em **Ajustes** só aparece nesse caso. Ver [Sincronização](features/settings/sync.md).
 
+Outra exceção opcional é o **Treinador**: se o site tiver o servidor do treinador, cada pergunta que você faz nessa tela envia ao **Claude (Anthropic)** um resumo dos seus treinos e a conversa. Nada é enviado enquanto você não usa o Treinador. Ver [Treinador](features/coach.md).
+
 ## O que fica guardado no seu aparelho
 
 | Onde | O que | Exemplos |
 |---|---|---|
 | **IndexedDB** (banco de dados do navegador, chamado `lapwing`) | Seus dados principais | corridas e seus pontos de GPS, planos e treinos, metas, configurações do atleta (FC máxima, zonas), conexão com o Strava |
-| **localStorage** (chaves `lapwing:*`) | Preferências pequenas | idioma, tema, o percurso em edição e seu nome, o pace do editor, a posição do mapa, o plano de treino aberto, o período escolhido em Metas |
+| **localStorage** (chaves `lapwing:*`; a conversa do Treinador em `lapwing-coach:conversation`) | Preferências pequenas | idioma, tema, o percurso em edição e seu nome, o pace do editor, a posição do mapa, o plano de treino aberto, o período escolhido em Metas |
 | **sessionStorage** | Dados temporários do login no Strava | um código de segurança que dura só até fechar a aba |
 
 Não usamos cookies, ferramentas de estatística nem anúncios.
@@ -29,6 +31,7 @@ Não usamos cookies, ferramentas de estatística nem anúncios.
 | **[BRouter](https://brouter.de/)** | Quando você adiciona ou move pontos em **Rotas** | As coordenadas de início e fim de cada trecho, para calcular o caminho. |
 | **[Strava](https://www.strava.com/)** | Só se você conectar em **Ajustes** | O login autorizado por você e os pedidos para baixar suas atividades. |
 | **Servidor de sincronização do próprio site** (`/api/sync/`) | Só se o site tiver um (cartão **Sincronização** em **Ajustes**) | Suas corridas, trajetos, planos, treinos, metas e configurações do atleta. O login do Strava não vai. |
+| **[Claude (Anthropic)](https://www.anthropic.com/)**, pelo servidor do treinador do próprio site (`/api/coach/`) | Só quando você pergunta algo na tela **Treinador** | O resumo dos seus treinos (perfil e zonas, volume semanal, corridas recentes, melhores esforços, forma, plano ativo e metas), a conversa e o que o treinador consultar (lista de corridas, detalhes de uma corrida, o plano, a rota aberta no editor). |
 
 Arquivos de corrida que você importa (GPX, FIT, TCX) são lidos **dentro do navegador** e não são enviados a ninguém.
 

@@ -290,7 +290,8 @@ a {
 
 @media (max-width: 640px) {
   body {
-    grid-template-columns: 1fr;
+    /* minmax(0, …): the tab bar never makes the page wider than the screen. */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: 1fr var(--nav-height);
   }
   .app-nav {
@@ -306,8 +307,9 @@ a {
   .nav-items {
     flex-direction: row;
     flex: 1;
-    /* Seven tabs share the bar: every pixel goes to the labels. */
+    /* Eight tabs share the bar: every pixel goes to the labels. */
     gap: 0;
+    min-width: 0;
   }
   .nav-item {
     flex: 1;

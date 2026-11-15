@@ -22,6 +22,7 @@ O Lapwing foi feito para quem corre por prazer, por saúde ou para bater recorde
 | 📅 | **Treinos** | Monte um plano para a sua próxima prova, ou peça para o Lapwing gerar um. Ele marca sozinho os treinos que você já fez e exporta o plano para o calendário ou para o relógio. |
 | 📊 | **Histórico** | Veja quanto você correu por semana, como seu ritmo evolui, seus recordes e um calendário com todos os seus dias de corrida. Dá para filtrar por distância, ritmo, subida e mais. |
 | ⚖️ | **Comparar** | Coloque duas corridas lado a lado e descubra onde você foi mais rápido. |
+| 💬 | **Treinador** | Converse com um treinador (Claude) que conhece suas corridas, seu plano e suas zonas: tire dúvidas, avalie treinos e simule provas. Opcional: precisa do servidor do treinador com uma chave da API da Anthropic. |
 | 🎯 | **Metas** | Crie metas semanais ou mensais, veja uma estimativa do seu tempo nos 5 km, 10 km, meia e maratona, e receba avisos quando estiver treinando demais. |
 | ⚙️ | **Ajustes** | Escolha tema claro ou escuro, conecte o Strava (se quiser; exige assinatura do Strava) e faça backup dos seus dados. |
 
@@ -34,7 +35,7 @@ O app funciona em **português** e **inglês**, no computador e no celular.
 ## Seus dados são seus 🔒
 
 - Tudo o que você importa ou cria fica **guardado só no seu navegador**, neste aparelho.
-- O Lapwing **não tem servidor** e não envia suas corridas para lugar nenhum.
+- O Lapwing **não tem servidor** e não envia suas corridas para lugar nenhum. Uma exceção opcional: no **Treinador**, cada pergunta envia um resumo dos seus treinos ao Claude (Anthropic), pelo servidor do treinador do site.
 - A internet é usada só para três coisas: carregar o **mapa** (OpenFreeMap), **calcular caminhos** no editor de rotas (BRouter) e, se você quiser, **buscar corridas no Strava** (disponível para assinantes do Strava).
 - Para não perder nada, use **Ajustes → Backup e restauração** de vez em quando. Assim você também pode levar seus dados para outro computador.
 
