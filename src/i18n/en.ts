@@ -66,6 +66,14 @@ export const en = {
   gpxReadError: "Couldn't read this file.",
   nothingToExport: 'Draw a route before exporting.',
   dropHint: 'Drop a GPX file to open it',
+
+  // Elevation profile under the map (src/screens/routes/profile-panel.ts)
+  profileToggle: 'Elevation profile',
+  profileHide: 'Hide elevation profile',
+  profileGain: 'Elevation gain',
+  profileLoss: 'Elevation loss',
+  profileRange: 'Lowest and highest elevation',
+  profileGrade: 'Grade',
 };
 
 export type MessageKey = keyof typeof en;

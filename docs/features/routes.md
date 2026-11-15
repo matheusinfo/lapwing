@@ -47,6 +47,13 @@ A tela **Rotas** é um editor de percursos. Você clica no mapa e o app liga os 
 
 O mapa se ajusta ao percurso e aparece o aviso “*nome* aberto (*distância*)”.
 
+### Ver o perfil de elevação
+
+Quando o percurso tem altitude (um GPX com `<ele>` ou uma rota desenhada, que recebe a altitude do BRouter), aparece embaixo do mapa o **Perfil de elevação**: um gráfico da altitude (m) ao longo da distância (km), com um resumo ao lado (distância, ↗ subida, ↘ descida e altitude mínima–máxima).
+
+- Passe o mouse (ou o dedo) sobre o gráfico para ver a distância, a altitude e a **Inclinação** naquele ponto. Um marcador mostra o lugar no mapa.
+- A seta no canto do gráfico esconde o perfil. O botão de montanha na barra de ferramentas mostra ou esconde de novo. O app lembra a sua escolha.
+
 ## Detalhes
 
 - **Como o caminho é escolhido.** Cada trecho novo entre dois pontos é pedido ao serviço gratuito **BRouter**, no modo “mais curto” (`shortest`), que segue ruas e trilhas sem dar voltas por caminhos “mais bonitos”.
@@ -63,6 +70,7 @@ O mapa se ajusta ao percurso e aparece o aviso “*nome* aberto (*distância*)�
 - **Desfazer** guarda até 100 passos.
 - **Botões desligados.** **Exportar GPX**, **Inverter sentido** e **Fechar circuito** só funcionam com pelo menos 2 pontos.
 - **Estatísticas.** **Distância** em km; **Elevação** mostra quanto o percurso sobe (↑) e desce (↓), em metros, quando há dados de altitude; **Tempo estimado** = distância × pace.
+- **Perfil de elevação.** Usa no máximo 800 pontos, igualmente espaçados pela distância, e suaviza de leve o ruído do GPS (média em janelas de pelo menos 30 m). A inclinação é medida em cerca de 100 m. Subida e descida no resumo são os mesmos números do painel (calculados nos pontos originais, ignorando variações menores que 2 m). Some quando a rota tem menos de 2 pontos ou não tem altitude.
 - **Pace.** Formato `m:ss` (por exemplo `5:30`). O padrão é `6:00`. Se o valor for inválido, o campo fica marcado e o tempo some.
 - **Arquivo exportado.** GPX 1.1 com o nome da rota. O nome do arquivo vem do nome da rota, sem acentos (por exemplo, “Volta no Parque” vira `volta-no-parque.gpx`).
 - **Tudo fica salvo no navegador.** A rota, o nome, o pace e a posição do mapa são guardados automaticamente. Se você fechar a aba e voltar, a rota continua lá.

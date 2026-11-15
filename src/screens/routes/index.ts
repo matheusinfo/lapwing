@@ -10,6 +10,7 @@ import { formatDistance } from '../../format';
 import { onLangChange, t, translateDom } from '../../i18n';
 import { renderStats, setupPaceInput } from './stats';
 import { setupToolbar, updateToolbar } from './toolbar';
+import { createProfilePanel } from './profile-panel';
 import { showToast } from '../../ui/toast';
 import type { LngLat } from '../../types';
 import type { ScreenMount } from '../../app/screen';
@@ -78,7 +79,38 @@ const TEMPLATE = /* html */ `
     <button id="btn-clear" type="button" data-i18n-title="clear">
       <svg viewBox="0 0 24 24"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="m19 6-1 14H6L5 6" /></svg>
     </button>
+    <span class="rm-sep" aria-hidden="true"></span>
+    <button id="btn-profile" type="button" data-i18n-title="profileToggle" aria-pressed="false" disabled>
+      <svg viewBox="0 0 24 24"><path d="M3 19 9 8l4 6 3-4 5 9z" /></svg>
+    </button>
   </nav>
+
+  <section class="rm-profile" hidden>
+    <div class="rm-profile-summary">
+      <span class="rm-profile-stat rm-profile-distance" data-i18n-title="distance">
+        <svg viewBox="0 0 24 24"><path d="M3 12h18" /><path d="m7 8-4 4 4 4" /><path d="m17 8 4 4-4 4" /></svg>
+        <span id="profile-distance"></span>
+      </span>
+      <span class="rm-profile-pair">
+        <span class="rm-profile-stat" data-i18n-title="profileGain">
+          <svg viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8" /><path d="M14 7h7v7" /></svg>
+          <span id="profile-gain"></span>
+        </span>
+        <span class="rm-profile-stat" data-i18n-title="profileLoss">
+          <svg viewBox="0 0 24 24"><path d="m3 7 6 6 4-4 8 8" /><path d="M21 10v7h-7" /></svg>
+          <span id="profile-loss"></span>
+        </span>
+      </span>
+      <span class="rm-profile-stat rm-profile-range" data-i18n-title="profileRange">
+        <svg viewBox="0 0 24 24"><path d="M12 3v18" /><path d="m8 7 4-4 4 4" /><path d="m8 17 4 4 4-4" /></svg>
+        <span id="profile-range"></span>
+      </span>
+    </div>
+    <div class="rm-profile-chart"><canvas></canvas></div>
+    <button class="rm-profile-hide" type="button" data-i18n-title="profileHide">
+      <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg>
+    </button>
+  </section>
 
   <div class="rm-drop-overlay"><span data-i18n="dropHint"></span></div>
   <input id="file-input" type="file" accept=".gpx,application/gpx+xml" hidden />
@@ -142,6 +174,8 @@ export const mount: ScreenMount = (root) => {
     console.warn('Routing failed:', err);
     showToast(t('routeFailed'), 'warn');
   });
+  const profile = createProfilePanel(root, map);
+  cleanups.push(() => profile.destroy());
 
   const refreshPanel = () => {
     renderStats(state.track(), routing.busy, state.waypoints.length);
@@ -173,6 +207,8 @@ export const mount: ScreenMount = (root) => {
       routing.sync();
       editor.render();
       refreshPanel();
+      // Also resizes the map when the profile appears or goes, before any fitBounds.
+      profile.update(state.track());
       window.clearTimeout(saveTimer);
       saveTimer = window.setTimeout(saveRoute, 300);
     });

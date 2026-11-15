@@ -68,4 +68,12 @@ export const ptBR: Record<MessageKey, string> = {
   gpxReadError: 'Não foi possível ler este arquivo.',
   nothingToExport: 'Desenhe uma rota antes de exportar.',
   dropHint: 'Solte um arquivo GPX para abri-lo',
+
+  // Elevation profile under the map (src/screens/routes/profile-panel.ts)
+  profileToggle: 'Perfil de elevação',
+  profileHide: 'Ocultar perfil de elevação',
+  profileGain: 'Ganho de elevação',
+  profileLoss: 'Perda de elevação',
+  profileRange: 'Elevação mínima e máxima',
+  profileGrade: 'Inclinação',
 };

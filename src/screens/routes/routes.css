@@ -1,13 +1,20 @@
 /* Route maker screen. Everything is scoped under .rm-root. */
 
 .rm-root {
+  /* Height of the elevation profile docked under the map (0 when hidden). */
+  --rm-profile-h: 0px;
   overflow: hidden;
+}
+.rm-root.rm-profile-open {
+  --rm-profile-h: 156px;
 }
 
 /* Scoped selector so it wins over MapLibre's own `.maplibregl-map { position: relative }`. */
 .rm-root .rm-map {
   position: absolute;
   inset: 0;
+  /* The map ends where the profile starts, so its controls and fitBounds stay clear of it. */
+  bottom: var(--rm-profile-h);
 }
 
 /* Map cursor: crosshair for adding points, pointer over the route line. */
@@ -119,7 +126,7 @@
 .rm-toolbar {
   position: absolute;
   left: 50%;
-  bottom: 28px;
+  bottom: calc(var(--rm-profile-h) + 28px);
   z-index: 2;
   transform: translateX(-50%);
   display: flex;
@@ -166,6 +173,10 @@
 .rm-toolbar button.primary:hover:not(:disabled) {
   background: var(--accent-hover);
 }
+.rm-toolbar button[aria-pressed='true'] {
+  color: var(--accent-strong);
+  background: var(--accent-soft);
+}
 
 .rm-toolbar svg {
   width: 20px;
@@ -182,6 +193,130 @@
   height: 24px;
   margin: 0 3px;
   background: var(--line);
+}
+
+/* ---- Elevation profile (docked under the map) ---- */
+
+.rm-profile {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  height: var(--rm-profile-h);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'summary chart hide';
+  gap: 4px 18px;
+  padding: 10px 8px 6px 18px;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+}
+.rm-profile[hidden] {
+  display: none;
+}
+
+.rm-profile-summary {
+  grid-area: summary;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+}
+.rm-profile-pair {
+  display: flex;
+  gap: 14px;
+}
+.rm-profile-stat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rm-profile-stat svg {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.rm-profile-distance {
+  font-size: 20px;
+  color: var(--accent-strong);
+}
+.rm-profile-distance svg {
+  width: 18px;
+  height: 18px;
+}
+.rm-profile-range {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.rm-profile-chart {
+  grid-area: chart;
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  /* Dragging a finger along the chart moves the marker instead of scrolling. */
+  touch-action: none;
+}
+
+.rm-profile-hide {
+  grid-area: hide;
+  align-self: start;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.rm-profile-hide:hover {
+  color: var(--ink);
+  background: var(--surface-alt);
+}
+.rm-profile-hide:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.rm-profile-hide svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The spot on the map under the pointer on the chart. Dark in both themes so
+   it doesn't look like a (white) waypoint marker. */
+.rm-profile-dot {
+  width: 14px;
+  height: 14px;
+  background: #1f2328;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+/* The toast lives outside the screen: lift it above the profile too. */
+body:has(.rm-root.rm-profile-open) #toast {
+  bottom: 246px;
 }
 
 /* ---- Waypoint markers ---- */
@@ -289,14 +424,57 @@
   .rm-toolbar {
     left: 8px;
     right: 8px;
-    bottom: 26px;
+    bottom: calc(var(--rm-profile-h) + 26px);
     transform: none;
     justify-content: space-between;
+    /* Eight buttons must fit a 320px-wide screen. */
+    gap: 2px;
+  }
+  .rm-toolbar button {
+    min-width: 34px;
+    padding: 0 7px;
   }
   .rm-toolbar button.labelled span {
     display: none;
   }
   .rm-sep {
     display: none;
+  }
+
+  /* Profile: summary on one line above the chart. */
+  .rm-root.rm-profile-open {
+    --rm-profile-h: 136px;
+  }
+  .rm-profile {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-areas:
+      'summary hide'
+      'chart chart';
+    gap: 0 8px;
+    padding: 4px 4px 4px 12px;
+  }
+  .rm-profile-summary {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 14px;
+  }
+  .rm-profile-stat,
+  .rm-profile-distance {
+    font-size: 13px;
+  }
+  .rm-profile-distance svg {
+    width: 16px;
+    height: 16px;
+  }
+  .rm-profile-pair {
+    gap: 10px;
+  }
+  .rm-profile-range {
+    display: none;
+  }
+  body:has(.rm-root.rm-profile-open) #toast {
+    bottom: calc(var(--nav-height) + 84px + 136px);
   }
 }
